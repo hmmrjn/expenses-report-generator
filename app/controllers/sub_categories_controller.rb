@@ -13,6 +13,7 @@ class SubCategoriesController < ApplicationController
   # GET /sub_categories/new
   def new
     @sub_category = SubCategory.new
+    @categories = Category.all
   end
 
   # GET /sub_categories/1/edit

@@ -13,6 +13,7 @@ class ExpensesController < ApplicationController
   # GET /expenses/new
   def new
     @expense = Expense.new
+    @sub_categories = SubCategory.all
   end
 
   # GET /expenses/1/edit
