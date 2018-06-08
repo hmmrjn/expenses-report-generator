@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: 2018-06-08
+  sub_category: one
+  amount: 1
+
+two:
+  date: 2018-06-08
+  sub_category: two
+  amount: 1
