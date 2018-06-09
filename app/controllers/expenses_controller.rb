@@ -21,6 +21,7 @@ class ExpensesController < ApplicationController
 
   # GET /expenses/1/edit
   def edit
+    @sub_categories = SubCategory.all
   end
 
   # POST /expenses
