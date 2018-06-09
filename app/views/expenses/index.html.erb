@@ -2,6 +2,46 @@
 
 <h1>Expenses</h1>
 
+<%= form_with(model: @expense, local: true) do |form| %>
+  <% if @expense.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@expense.errors.count, "error") %> prohibited this expense from being saved:</h2>
+
+      <ul>
+      <% @expense.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :date %>
+    <%= form.date_select :date, discard_day: true %>
+    <%= form.number_field 'date(3i)', id: 'day_field', value: session[:current_day] %>
+  </div>
+
+  <div class="field">
+    <%= form.label :amount %>
+    <%= form.text_field :amount, autofocus: true, autocomplete: 'off' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :sub_category_name %>
+    <%= form.text_field :sub_category_name, list: :sub_categories %>
+  </div>
+
+  <datalist id="sub_categories">
+    <% @sub_categories.each do |sub_category| %>
+    <option value="<%= sub_category.name %>">
+    <% end %>
+  </datalist>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+
 <table>
   <thead>
     <tr>
@@ -16,8 +56,8 @@
     <% @expenses.each do |expense| %>
       <tr>
         <td><%= expense.date %></td>
-        <td><%= expense.sub_category %></td>
-        <td><%= expense.amount %></td>
+        <td><%= expense.sub_category.name %></td>
+        <td><%= expense.amount.to_s(:delimited) %></td>
         <td><%= link_to 'Show', expense %></td>
         <td><%= link_to 'Edit', edit_expense_path(expense) %></td>
         <td><%= link_to 'Destroy', expense, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -25,9 +65,24 @@
     <% end %>
   </tbody>
 </table>
-
 <br>
 
 <%= link_to 'New Expense', new_expense_path %>
 <%= link_to 'Categories', categories_path %>
 <%= link_to 'Sub Categories', sub_categories_path %>
+
+<script>
+$(function(){
+  document.onkeydown = checkKey;
+  function checkKey(e) {
+      e = e || window.event;
+      let temp = parseInt( $('#day_field').val() );
+      if (e.keyCode == '38') { //UP KEY
+        $('#day_field').val(temp + 1);
+      } else if (e.keyCode == '40') { //DOWN KEY
+        $('#day_field').val(temp - 1);
+      }
+
+  }
+})
+</script>
