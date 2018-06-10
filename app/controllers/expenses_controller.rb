@@ -5,6 +5,11 @@ class ExpensesController < ApplicationController
 
   # GET /expenses
   def index
+    if session[:current_day]
+      @current_day = 1
+    else
+      @current_day = session[:current_day]
+    end
     @expense = Expense.new
     @expenses = Expense.all.order(date: :desc)
     @sub_categories = SubCategory.all
@@ -29,6 +34,7 @@ class ExpensesController < ApplicationController
   # POST /expenses
   def create
     session[:current_day] = params[:expense]['date(3i)']
+    @current_day = session[:current_day]
     @expense = Expense.new(expense_params)
     @sub_categories = SubCategory.all
     if @expense.save
