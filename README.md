@@ -1,24 +1,32 @@
-# README
+# About
+I made this for myself.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+So that I can make Expence Reports faster.
 
-Things you may want to cover:
 
-* Ruby version
+![image](https://i.imgur.com/tQgl5cD.png "screenshot")
 
-* System dependencies
+screenshot (as of 2018/6/10)
 
-* Configuration
+# Demo
+Heroku Demo
 
-* Database creation
+https://expenses-report-generator.herokuapp.com/
 
-* Database initialization
 
-* How to run the test suite
+# Versions
+* Ruby 2.4
+* Rails 5.2.0
 
-* Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
+# Run Locally
 
-* ...
+```sh
+$ git clone https://github.com/hmmrjn/expenses-report-generator.git
+$ cd expenses-report-generator
+$ bundle install
+$ rails db:migrate
+$ rails server
+# Press Ctrl+C to quit.
+```
+Open http://localhost:3000/
