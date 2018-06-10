@@ -75,3 +75,19 @@ table.expenses-table {
     color: $theme_color;
   }
 }
+
+.btn {
+  background: $theme_color;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, .3);
+  color: white;
+  height: 50px;
+  font-size: 20px;
+  margin-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  &:hover {
+    background: darken($theme_color, 20%);
+  }
+}

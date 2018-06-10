@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root 'expenses#index'
+  get 'download' => 'expenses#download'
   resources :expenses
   resources :sub_categories
   resources :categories

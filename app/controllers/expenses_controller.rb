@@ -1,3 +1,5 @@
+require 'csv'
+
 class ExpensesController < ApplicationController
   before_action :set_expense, only: [:show, :edit, :update, :destroy]
 
@@ -50,6 +52,20 @@ class ExpensesController < ApplicationController
   def destroy
     @expense.destroy
     redirect_to expenses_url, notice: 'Expense was successfully destroyed.'
+  end
+
+  def download
+    @expenses = Expense.all.order(:date)
+    header = ['Date', 'Category', 'Sub Category', 'Amount']
+    generated_csv = CSV.generate(row_sep: "\r\n") do |csv|
+      csv << header
+      @expenses.each do |expense|
+        csv << [expense.date, expense.sub_category.category.name, expense.sub_category.name, expense.amount]
+      end
+    end
+    send_data generated_csv.encode(Encoding::CP932, invalid: :replace, undef: :replace),
+      filename: "expenses-#{@expenses.last.date.strftime("%Y-%m")}.csv",
+      type: 'text/csv; charset=uft-8'
   end
 
   private
