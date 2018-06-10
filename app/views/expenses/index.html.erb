@@ -1,7 +1,10 @@
+<div class="container">
+
 <p id="notice"><%= notice %></p>
 
-<h1>Expenses</h1>
+<h1>Expenses Report Generator</h1>
 
+<div class="expenses-form">
 <%= form_with(model: @expense, local: true) do |form| %>
   <% if @expense.errors.any? %>
     <div id="error_explanation">
@@ -15,40 +18,56 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :date %>
+  <div class="field month-field">
+    <%= form.label 'month' %>
     <%= form.date_select :date, discard_day: true %>
-    <%= form.number_field 'date(3i)', id: 'day_field', value: session[:current_day] %>
   </div>
 
-  <div class="field">
-    <%= form.label :amount %>
-    <%= form.text_field :amount, autofocus: true, autocomplete: 'off' %>
-  </div>
+  <div class="flex-container">
 
-  <div class="field">
-    <%= form.label :sub_category_name %>
-    <%= form.text_field :sub_category_name, list: :sub_categories %>
-  </div>
+    <div class="field">
+      <%= form.label 'day' %><br>
+      <%= form.number_field 'date(3i)', id: 'day_field', value: session[:current_day] %>
+    </div>
 
-  <datalist id="sub_categories">
-    <% @sub_categories.each do |sub_category| %>
-    <option value="<%= sub_category.name %>">
-    <% end %>
-  </datalist>
+    <div class="field">
+      <%= form.label :amount %><br>
+      <%= form.text_field :amount, id: 'first', autofocus: true, tabIndex: '1', autocomplete: 'off' %>
+    </div>
 
-  <div class="actions">
-    <%= form.submit %>
+    <div class="field">
+      <i class="fas fa-exchange-alt"></i><br>Tab
+    </div>
+
+    <div class="field">
+      <%= form.label :sub_category_name %><br>
+      <%= form.text_field :sub_category_name, tabIndex: '2', list: :sub_categories, autocomplete: 'off' %>
+    </div>
+
+    <datalist id="sub_categories">
+      <% @sub_categories.each do |sub_category| %>
+      <option value="<%= sub_category.name %>">
+      <% end %>
+    </datalist>
+
+    <div class="actions">
+      <%= form.submit 'Enter' %>
+    </div>
+    <input tabIndex=3 onfocus="document.getElementById('first').focus()"
+     style="position: relative; left: -100000px">
+
   </div>
 <% end %>
+</div>
 
-<table>
+<table class="expenses-table">
   <thead>
     <tr>
       <th>Date</th>
       <th>Sub category</th>
+      <th>Category</th>
       <th>Amount</th>
-      <th colspan="3"></th>
+      <th colspan="2"></th>
     </tr>
   </thead>
 
@@ -56,20 +75,20 @@
     <% @expenses.each do |expense| %>
       <tr>
         <td><%= expense.date %></td>
-        <td><%= expense.sub_category.name %></td>
-        <td><%= expense.amount.to_s(:delimited) %></td>
-        <td><%= link_to 'Show', expense %></td>
-        <td><%= link_to 'Edit', edit_expense_path(expense) %></td>
-        <td><%= link_to 'Destroy', expense, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= expense.sub_category.category.name.upcase %></td>
+        <td><%= expense.sub_category.name.capitalize %></td>
+        <td align="right"><%= expense.amount.to_s(:delimited) %></td>
+        <td><%= link_to edit_expense_path(expense), title: 'Edit' do %><i class="fas fa-edit"></i><% end %></td>
+        <td><%= link_to expense, title: 'Delete', method: :delete, data: { confirm: 'Are you sure?' } do %><i class="fas fa-trash"></i><% end %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 <br>
 
-<%= link_to 'New Expense', new_expense_path %>
-<%= link_to 'Categories', categories_path %>
-<%= link_to 'Sub Categories', sub_categories_path %>
+<%= link_to 'Manage Categories', categories_path %>
+<%= link_to 'Manage Sub Categories', sub_categories_path %>
+</div>
 
 <script>
 $(function(){

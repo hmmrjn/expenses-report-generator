@@ -1,3 +1,77 @@
 // Place all the styles related to the expenses controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+@import url('https://fonts.googleapis.com/css?family=Kanit');
+
+$theme_color: steelblue;
+
+body {
+  background: #eee;
+  font-family: 'Kanit', sans-serif;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 1000px;
+  position: relative;
+}
+
+.expenses-form {
+
+  input {
+    background: white;
+    border: none;
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, .3);
+    height: 50px;
+    font-size: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  #day_field {
+    width: 40px;
+  }
+
+  input[type="submit"] {
+    background: $theme_color;
+    color: white;
+  }
+
+  label {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding-left: 10px;
+  }
+
+  .month-field {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .flex-container {
+    display: flex;
+    align-items: flex-end;
+    .field {
+      margin: 10px 20px;
+    }
+  }
+}
+
+table.expenses-table {
+  border-collapse: collapse;
+  margin-top: 100px;
+  width: 100%;
+  tr {
+    border-bottom: 1px solid rgba(0, 0, 0, .3);
+  }
+  td {
+    padding: 10px 30px;
+  }
+  a:hover {
+    background: none;
+    color: $theme_color;
+  }
+}
