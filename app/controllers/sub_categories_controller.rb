@@ -18,6 +18,7 @@ class SubCategoriesController < ApplicationController
 
   # GET /sub_categories/1/edit
   def edit
+    @categories = Category.all
   end
 
   # POST /sub_categories
@@ -54,6 +55,7 @@ class SubCategoriesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def sub_category_params
+      params[:sub_category][:name] = params[:sub_category][:name].downcase
       params.require(:sub_category).permit(:name, :category_id)
     end
 end
