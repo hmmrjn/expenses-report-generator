@@ -1,7 +1,7 @@
 # About
 I made this for myself.
 
-So that I can make Expence Reports faster.
+So that I can make Expense Reports faster.
 
 
 ![image](https://i.imgur.com/tQgl5cD.png "screenshot")
