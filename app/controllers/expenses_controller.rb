@@ -83,8 +83,9 @@ class ExpensesController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def expense_params
       if params[:expense][:sub_category_name]
-        subcat = SubCategory.find_by(name: params[:expense][:sub_category_name])
-        params[:expense][:sub_category_id] = subcat.id
+        if subcat = SubCategory.find_by(name: params[:expense][:sub_category_name])
+          params[:expense][:sub_category_id] = subcat.id
+        end
       end
       params.require(:expense).permit(:date, :sub_category_id, :amount)
     end
