@@ -32,15 +32,38 @@ class ExpensesController < ApplicationController
   end
 
   # POST /expenses
+  #TODO refactoring
   def create
     session[:current_day] = params[:expense]['date(3i)']
     @current_day = session[:current_day]
     @expense = Expense.new(expense_params)
+    @expenses = Expense.all.order(date: :desc)
     @sub_categories = SubCategory.all
+
+    # if new subcat, ask for cat name
+    subcat_na = params[:expense][:sub_category_name]
+    cat_na = params[:expense][:category_name]
+    if subcat_na.present? && !cat_na.present? && !SubCategory.exists?(name: subcat_na.downcase)
+      @unregistered_sub_category = true
+      @sub_category_name = subcat_na
+      @categories = Category.all
+      render :index
+      return
+    end
+
+    # create subcat. create cat too if missing
+    if subcat_na.present? && cat_na.present?
+      unless Category.exists?(name: cat_na.downcase)
+        Category.create(name: cat_na.downcase)
+      end
+      category = Category.find_by(name: cat_na.downcase)
+      sub_category = category.sub_categories.create(name: subcat_na.downcase)
+      @expense.sub_category = sub_category
+    end
+
     if @expense.save
       redirect_to expenses_path, notice: 'Expense was successfully created.'
     else
-      @expenses = Expense.all.order(date: :desc)
       render :index
     end
   end

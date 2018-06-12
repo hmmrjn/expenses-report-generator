@@ -41,7 +41,7 @@
 
     <div class="field">
       <%= form.label :sub_category_name %><br>
-      <%= form.text_field :sub_category_name, tabIndex: '2', list: :sub_categories, autocomplete: 'off' %>
+      <%= form.text_field :sub_category_name, tabIndex: '2', value: @sub_category_name, list: :sub_categories, autocomplete: 'off' %>
     </div>
 
     <datalist id="sub_categories">
@@ -50,10 +50,23 @@
       <% end %>
     </datalist>
 
+    <% if @unregistered_sub_category %>
+    <div class="field">
+      <%= form.label :category_name %><br>
+      <%= form.text_field :category_name, tabIndex: '3', list: :categories, autocomplete: 'off' %>
+    </div>
+
+    <datalist id="categories">
+      <% @categories.each do |category| %>
+      <option value="<%= category.name.upcase %>">
+      <% end %>
+    </datalist>
+    <% end %>
+
     <div class="actions">
       <%= form.submit 'Enter' %>
     </div>
-    <input tabIndex=3 onfocus="document.getElementById('first').focus()"
+    <input tabIndex=4 onfocus="document.getElementById('first').focus()"
      style="position: relative; left: -100000px">
 
   </div>
