@@ -60,7 +60,7 @@ body {
   }
 
   .tooltip-trigger {
-    $tootip-bg: lightslategray;
+    $tootip-bg: black;
     position: relative;
     .tooltip {
       background: $tootip-bg;
@@ -72,7 +72,7 @@ body {
       padding: 15px 20px;
       position: absolute;
       top: 125%;
-      transition: .4s;
+      transition: .3s;
       visibility: hidden;
       width: max-content;
       z-index: 1;
@@ -88,13 +88,13 @@ body {
         z-index: 2;
       }
       .fa-lightbulb {
-        color: gold;
+        color: silver;
         margin-right: 10px;
       }
     }
   }
   .tooltip-trigger:hover .tooltip {
-    opacity: 1;
+    opacity: .8;
     visibility: visible;
   }
 }
