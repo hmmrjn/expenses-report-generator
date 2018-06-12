@@ -6,9 +6,9 @@ class ExpensesController < ApplicationController
   # GET /expenses
   def index
     if session[:current_day]
-      @current_day = 1
-    else
       @current_day = session[:current_day]
+    else
+      @current_day = 1
     end
     @expense = Expense.new
     @expenses = Expense.all.order(date: :desc)
