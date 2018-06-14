@@ -2,8 +2,17 @@
 
 <p>
   <strong>Name:</strong>
-  <%= @category.name %>
+  <%= @category.name.upcase %>
 </p>
+
+<p>
+  <strong>Sub Categories:</strong>
+</p>
+<ul>
+<% @category.sub_categories.each do |sub_category| %>
+  <li><%= link_to sub_category.name.capitalize, sub_category %></li>
+<% end %>
+</ul>
 
 <%= link_to 'Edit', edit_category_path(@category) %> |
 <%= link_to 'Back', categories_path %>
