@@ -5,7 +5,7 @@ class ExpensesController < ApplicationController
 
   # GET /expenses
   def index
-    if session[:current_day]
+    if session[:current_day].present?
       @current_day = session[:current_day]
     else
       @current_day = 1
