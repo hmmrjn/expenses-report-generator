@@ -26,8 +26,8 @@
   <div class="flex-container">
 
     <div class="field tooltip-trigger">
-      <%= form.label 'day' %><br>
-      <%= form.number_field 'date(3i)', id: 'day_field', disabled: true, value: @current_day %>
+      <%= form.label :day %><br>
+      <%= form.number_field :day, id: 'day_field', readonly: true, value: @current_day %>
       <div class="tooltip">
         <i class="fas fa-lightbulb"></i> Use the
         <i class="far fa-caret-square-up"></i>

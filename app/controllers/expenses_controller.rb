@@ -34,9 +34,12 @@ class ExpensesController < ApplicationController
   # POST /expenses
   #TODO refactoring
   def create
-    session[:current_day] = params[:expense]['date(3i)']
-    @current_day = session[:current_day]
     @expense = Expense.new(expense_params)
+    @expense.date = @expense.date.change(day: params[:expense][:day].to_i)
+    session[:current_day] = params[:expense][:day]
+
+    # for renders
+    @current_day = session[:current_day]
     @expenses = Expense.all.order(date: :desc)
     @sub_categories = SubCategory.all
 
