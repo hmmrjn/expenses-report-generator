@@ -5,11 +5,12 @@ class ExpensesController < ApplicationController
 
   # GET /expenses
   def index
-    if session[:current_day].present?
-      @current_day = session[:current_day]
+    if session[:last_date]
+      @last_date = session[:last_date].to_date
     else
-      @current_day = 1
+      @last_date = Date.today.change(day: 1)
     end
+
     @expense = Expense.new
     @expenses = Expense.all.order(date: :desc)
     @sub_categories = SubCategory.all
@@ -36,10 +37,10 @@ class ExpensesController < ApplicationController
   def create
     @expense = Expense.new(expense_params)
     @expense.date = @expense.date.change(day: params[:expense][:day].to_i)
-    session[:current_day] = params[:expense][:day]
+    session[:last_date] = @expense.date
 
     # for renders
-    @current_day = session[:current_day]
+    @last_date = session[:last_date]
     @expenses = Expense.all.order(date: :desc)
     @sub_categories = SubCategory.all
 
@@ -94,11 +95,11 @@ class ExpensesController < ApplicationController
 
   def download
     @expenses = Expense.all.order(:date)
-    header = ['Date', 'Category', 'Sub Category', 'Amount']
+    header = ['Date', 'Category', 'Amount', 'Sub Category']
     generated_csv = CSV.generate(row_sep: "\r\n") do |csv|
       csv << header
       @expenses.each do |expense|
-        csv << [expense.date, expense.sub_category.category.name, expense.sub_category.name, expense.amount]
+        csv << [expense.date, expense.sub_category.category.name.upcase, expense.amount, expense.sub_category.name.titleize]
       end
     end
     send_data generated_csv.encode(Encoding::CP932, invalid: :replace, undef: :replace),

@@ -20,14 +20,14 @@
 
   <div class="field month-field">
     <%= form.label 'month' %>
-    <%= form.date_select :date, discard_day: true %>
+    <%= form.date_select :date, default: @last_date, discard_day: true %>
   </div>
 
   <div class="flex-container">
 
     <div class="field tooltip-trigger">
       <%= form.label :day %><br>
-      <%= form.number_field :day, id: 'day_field', readonly: true, value: @current_day %>
+      <%= form.number_field :day, id: 'day_field', readonly: true, value: @last_date.day %>
       <div class="tooltip">
         <i class="fas fa-lightbulb"></i> Use the
         <i class="far fa-caret-square-up"></i>
