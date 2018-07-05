@@ -116,7 +116,9 @@
 
 <%= link_to 'Manage Categories', categories_path %>
 <%= link_to 'Manage Sub Categories', sub_categories_path %>
-<%= button_to 'Download CSV File', 'download', class: :btn, method: :get %>
+<br>
+<%= link_to 'Download CSV File', 'download', class: :btn, method: :get %>
+<%= link_to 'Clear all data', 'expenses', class: :btn, method: :delete, data: { confirm: 'Are you sure?' } %>
 </div>
 
 <script>

@@ -83,6 +83,12 @@ class ExpensesController < ApplicationController
     redirect_to expenses_url, notice: 'Expense was successfully destroyed.'
   end
 
+  # DELETE /expenses/
+  def destroy_all
+    Expense.destroy_all
+    redirect_to expenses_url, notice: 'Expenses were successfully destroyed.'
+  end
+
   def download
     @expenses = Expense.all.order(:date)
     header = ['Date', 'Category', 'Sub Category', 'Amount']
