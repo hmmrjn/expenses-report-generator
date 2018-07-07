@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   root 'expenses#index'
   get 'download' => 'expenses#download'
   resources :expenses
+  resources :expense_groups
   delete 'expenses' => 'expenses#destroy_all'
   resources :sub_categories
   resources :categories
