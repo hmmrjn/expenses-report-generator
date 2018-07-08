@@ -1,3 +1,3 @@
 class ExpenseGroup < ApplicationRecord
-  has_many :expense, dependent: :destroy
+  has_many :expenses, dependent: :destroy
 end
