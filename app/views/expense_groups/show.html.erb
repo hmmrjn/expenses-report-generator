@@ -119,8 +119,8 @@
 <%= link_to 'Manage Categories', categories_path %>
 <%= link_to 'Manage Sub Categories', sub_categories_path %>
 <br>
-<%= link_to 'Download CSV File', 'download', class: :btn, method: :get %>
-<%= link_to 'Clear all data', 'expenses', class: :btn, method: :delete, data: { confirm: 'Are you sure?' } %>
+<%= link_to 'Download Expense Group', "/expense_groups/#{@expense_group.id}/download", class: :btn, method: :get %>
+<%= link_to 'Clear All', "/expense_groups/#{@expense_group.id}/expenses", class: :btn, method: :delete, data: { confirm: 'Are you sure?' } %>
 </div>
 
 <script>
