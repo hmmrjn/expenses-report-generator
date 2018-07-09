@@ -134,7 +134,11 @@ $(function(){
       } else if (e.keyCode == '40') { //DOWN KEY
         $('#day_field').val(temp - 1);
       }
-
+      if ($('#day_field').val() <= 0) {
+        $('#day_field').val(31);
+      } else if ($('#day_field').val() >= 32) {
+        $('#day_field').val(1);
+      }
   }
 })
 </script>
