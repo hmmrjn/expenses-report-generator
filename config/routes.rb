@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root 'expenses#index'
+  root 'expense_groups#index'
   get 'download' => 'expenses#download'
   resources :expenses
   resources :expense_groups

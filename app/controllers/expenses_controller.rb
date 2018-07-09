@@ -5,15 +5,7 @@ class ExpensesController < ApplicationController
 
   # GET /expenses
   def index
-    if session[:last_date]
-      @last_date = session[:last_date].to_date
-    else
-      @last_date = Date.today.change(day: 1)
-    end
-
-    @expense = Expense.new
     @expenses = Expense.all.order(date: :desc)
-    @sub_categories = SubCategory.all
   end
 
   # GET /expenses/1
@@ -43,6 +35,7 @@ class ExpensesController < ApplicationController
     @last_date = session[:last_date]
     @expenses = Expense.all.order(date: :desc)
     @sub_categories = SubCategory.all
+    @expense_group = ExpenseGroup.find(params[:expense][:expense_group_id])
 
     # if new subcat, ask for cat name
     subcat_na = params[:expense][:sub_category_name]
@@ -51,7 +44,7 @@ class ExpensesController < ApplicationController
       @unregistered_sub_category = true
       @sub_category_name = subcat_na
       @categories = Category.all
-      render :index
+      render 'expense_groups/show'
       return
     end
 
@@ -66,9 +59,9 @@ class ExpensesController < ApplicationController
     end
 
     if @expense.save
-      redirect_to expenses_path, notice: 'Expense was successfully created.'
+      redirect_to @expense_group, notice: 'Expense was successfully created.'
     else
-      render :index
+      render 'expense_groups/show'
     end
   end
 
@@ -120,6 +113,6 @@ class ExpensesController < ApplicationController
           params[:expense][:sub_category_id] = subcat.id
         end
       end
-      params.require(:expense).permit(:date, :sub_category_id, :amount)
+      params.require(:expense).permit(:date, :sub_category_id, :amount, :expense_group_id)
     end
 end

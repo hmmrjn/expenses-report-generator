@@ -8,6 +8,15 @@ class ExpenseGroupsController < ApplicationController
 
   # GET /expense_groups/1
   def show
+    if session[:last_date]
+      @last_date = session[:last_date].to_date
+    else
+      @last_date = Date.today.change(day: 1)
+    end
+
+    @expense = Expense.new
+    @expenses = Expense.all.order(date: :desc)
+    @sub_categories = SubCategory.all
   end
 
   # GET /expense_groups/new
