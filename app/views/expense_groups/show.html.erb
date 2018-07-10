@@ -1,0 +1,148 @@
+<div class="container">
+
+<p id="notice"><%= notice %></p>
+
+<%= @expense_group.name %>
+
+<div class="expenses-form">
+<%= form_with(model: @expense, local: true) do |form| %>
+  <% if @expense.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@expense.errors.count, "error") %> prohibited this expense from being saved:</h2>
+
+      <ul>
+      <% @expense.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field month-field">
+    <%= form.label 'month' %>
+    <%= form.date_select :date, default: @last_date, discard_day: true %>
+  </div>
+
+  <div class="flex-container">
+
+    <div class="field tooltip-trigger">
+      <%= form.label :day %><br>
+      <%= form.number_field :day, id: 'day_field', readonly: true, value: @last_date.day %>
+      <div class="tooltip">
+        <i class="fas fa-lightbulb"></i> Use the
+        <i class="far fa-caret-square-up"></i>
+        <i class="far fa-caret-square-down"></i> keys (even when outside the field)
+      </div>
+    </div>
+
+    <div class="field">
+      <%= form.label :amount %><br>
+      <% if @unregistered_sub_category %>
+      <%= form.text_field :amount, id: 'first', tabIndex: '1', autocomplete: 'off' %>
+      <% else %>
+      <%= form.text_field :amount, id: 'first', autofocus: true, tabIndex: '1', autocomplete: 'off' %>
+      <% end %>
+    </div>
+
+    <div class="field tooltip-trigger">
+      <i class="fas fa-exchange-alt"></i><br>Tab
+      <div class="tooltip">
+        <i class="fas fa-lightbulb"></i> Use the Tab key to switch between the 2 fields
+      </div>
+    </div>
+
+    <div class="field">
+      <%= form.label :sub_category_name %><br>
+      <%= form.text_field :sub_category_name, tabIndex: '2', value: @sub_category_name, list: :sub_categories, autocomplete: 'off' %>
+    </div>
+
+    <datalist id="sub_categories">
+      <% @sub_categories.each do |sub_category| %>
+      <option value="<%= sub_category.name %>">
+      <% end %>
+    </datalist>
+
+    <% if @unregistered_sub_category %>
+    <div class="field">
+      <%= form.label :category_name %><br>
+      <%= form.text_field :category_name, autofocus: true, tabIndex: '3', list: :categories, autocomplete: 'off' %>
+    </div>
+
+    <datalist id="categories">
+      <% @categories.each do |category| %>
+      <option value="<%= category.name.upcase %>">
+      <% end %>
+    </datalist>
+    <% end %>
+
+    <%= form.hidden_field :expense_group_id, value: @expense_group.id %>
+
+    <div class="actions tooltip-trigger">
+      <%= form.submit 'Enter' %>
+      <div class="tooltip">
+        <i class="fas fa-lightbulb"></i> Enter key also works
+      </div>
+    </div>
+    <input tabIndex=4 onfocus="document.getElementById('first').focus()"
+     style="position: relative; left: -100000px">
+
+  </div>
+<% end %>
+</div>
+
+<table class="expenses-table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Category</th>
+      <th>Sub category</th>
+      <th>Amount</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @expenses.each do |expense| %>
+      <tr>
+        <td><%= expense.date %></td>
+        <td><%= expense.sub_category.category.name.upcase %></td>
+        <td><%= expense.sub_category.name.capitalize %></td>
+        <td align="right"><%= expense.amount.to_s(:delimited) %></td>
+        <td><%= link_to edit_expense_path(expense), title: 'Edit' do %><i class="fas fa-edit"></i><% end %></td>
+        <td><%= link_to expense, title: 'Delete', method: :delete, data: { confirm: 'Are you sure?' } do %><i class="fas fa-trash"></i><% end %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+
+<%= link_to 'Manage Categories', categories_path %>
+<%= link_to 'Manage Sub Categories', sub_categories_path %>
+<br>
+<%= link_to 'Download Expense Group', "/expense_groups/#{@expense_group.id}/download", class: :btn, method: :get %>
+<%= link_to 'Clear All', "/expense_groups/#{@expense_group.id}/expenses", class: :btn, method: :delete, data: { confirm: 'Are you sure?' } %>
+</div>
+
+<script>
+$(function(){
+  document.onkeydown = checkKey;
+  function checkKey(e) {
+      e = e || window.event;
+      let temp = parseInt( $('#day_field').val() );
+      if (e.keyCode == '38') { //UP KEY
+        $('#day_field').val(temp + 1);
+      } else if (e.keyCode == '40') { //DOWN KEY
+        $('#day_field').val(temp - 1);
+      }
+      if ($('#day_field').val() <= 0) {
+        $('#day_field').val(31);
+      } else if ($('#day_field').val() >= 32) {
+        $('#day_field').val(1);
+      }
+  }
+})
+</script>
+
+
+<%= link_to 'Edit', edit_expense_group_path(@expense_group) %> |
+<%= link_to 'Back', expense_groups_path %>
