@@ -15,7 +15,7 @@ class ExpenseGroupsController < ApplicationController
     end
 
     @expense = Expense.new
-    @expenses = Expense.all.order(date: :desc)
+    @expenses = @expense_group.expenses.order(date: :desc)
     @sub_categories = SubCategory.all
   end
 

@@ -102,7 +102,7 @@
   </thead>
 
   <tbody>
-    <% @expense_group.expenses.each do |expense| %>
+    <% @expenses.each do |expense| %>
       <tr>
         <td><%= expense.date %></td>
         <td><%= expense.sub_category.category.name.upcase %></td>
