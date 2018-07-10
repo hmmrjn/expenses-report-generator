@@ -5,14 +5,40 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"/>
   </head>
 
   <body>
-    <%= link_to 'Groups', expense_groups_path %>
-    <%= yield %>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container">
+        <a class="navbar-brand" href="#">Expenses Report Generator</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item <%= 'active' if current_page?(expense_groups_path) %>">
+              <%= link_to 'Expenses', expense_groups_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item <%= 'active' if current_page?(expenses_path) %>">
+              <%= link_to 'All Expenses', expenses_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item <%= 'active' if current_page?(categories_path) %>">
+              <%= link_to 'Categories', categories_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item <%= 'active' if current_page?(sub_categories_path) %>">
+              <%= link_to 'Sub Categories', sub_categories_path, class: "nav-link" %>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <%= yield %>
+    </div>
   </body>
 </html>
