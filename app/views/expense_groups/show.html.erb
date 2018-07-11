@@ -89,9 +89,32 @@
   </div>
 <% end %>
 </div>
+<p>
+  <%= link_to 'Download', "/expense_groups/#{@expense_group.id}/download", class: 'btn btn-secondary' %>
+  <%= link_to 'Dictate', "/expense_groups/#{@expense_group.id}/expenses", class: 'btn btn-secondary', 'data-toggle' => 'collapse', 'data-target' => '#collapseExample', 'aria-expanded' => 'false', 'aria-controls' => 'collapseExample' %>
+  <%= link_to 'Delete All', "/expense_groups/#{@expense_group.id}/expenses", class: 'btn btn-danger', method: :delete, data: { confirm: 'Are you sure?' } %>
+</p>
+<div class="text-to-speech-form-wrapper">
+<div class="collapse" id="collapseExample">
+  <div class="card card-body">
+    <h2>Dictate Expenses</h2>
+    <p id="msg"></p>
+    <label for="voice-name">Voice</label>
+    <select name="voice-name" id="voice-name"></select>
+    <br>
+    <label for="rate">Speed</label>
+    <input type="range" min="0" max="2" step="0.25" name="rate" id="rate" value="1">
+    <br>
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button id="speak-button" class="btn btn-primary">Speak</button>
+      <button id="pause-button" class="btn btn-secondary">Pause</button>
+      <button id="resume-button" class="btn btn-secondary">Resume</button>
+      <button id="stop-button" class="btn btn-secondary">Stop</button>
+    </div>
+  </div>
+</div>
+</div>
 
-<%= link_to 'Download', "/expense_groups/#{@expense_group.id}/download", class: 'btn btn-secondary' %>
-<%= link_to 'Delete All', "/expense_groups/#{@expense_group.id}/expenses", class: 'btn btn-secondary', method: :delete, data: { confirm: 'Are you sure?' } %>
 
 <table class="expenses-table">
   <thead>
@@ -120,6 +143,7 @@
 
 </div>
 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
 <script>
 $(function(){
   document.onkeydown = checkKey;
@@ -137,5 +161,98 @@ $(function(){
         $('#day_field').val(1);
       }
   }
+
+/*
+ * Dictation
+ */
+
+// Web Speech Synthesis API
+let array = [];
+$("table.expenses-table tbody tr").each(function() {
+  let text = "";
+  let date = $(this)
+    .children()
+    .first()
+    .text();
+  text += moment(date).format("MMMM Do"); //2018-1-2 to January 2nd
+  text += ". price ";
+  text += $(this)
+    .children()
+    .eq(3)
+    .text();
+  text += ", ";
+  text += $(this)
+    .children()
+    .eq(2)
+    .text();
+  array.push(text);
+});
+
+// Check for browser support
+if (!"speechSynthesis" in window) {
+  $("#msg").html( "Sorry. Your browser <strong>does not support</strong> speech synthesis." );
+}
+// Fetch the list of voices and populate the voice options.
+function loadVoices() {
+// Fetch the available voices in English US.
+let voices = speechSynthesis .getVoices() .filter(voice => voice.lang == "en-US");
+$("#voice-name").empty(); voices.forEach(function(voice, i) { $option = $("<option>")
+      .val(voice.name)
+      .text(voice.name)
+      .prop("selected", voice.name === "Google US English");
+    $("#voice-name").append($option);
+  });
+}
+
+// Execute loadVoices.
+loadVoices();
+
+// Chrome loads voices asynchronously.
+window.speechSynthesis.onvoiceschanged = function(e) {
+  loadVoices();
+};
+
+// Create a new utterance for the specified text and add it to the queue.
+let i = 0;
+function speak(text) {
+var uttr = new SpeechSynthesisUtterance();
+  uttr.text = text;
+  uttr.rate = parseFloat($("#rate").val());
+
+  // If a voice has been selected, find the voice and set the
+  // utterance instance's voice attribute.
+  if ($("#voice-name").val()) {
+    uttr.voice = speechSynthesis
+      .getVoices()
+      .filter(voice => voice.name == $("#voice-name").val())[0];
+  }
+
+  speechSynthesis.speak(uttr);
+
+
+  uttr.onend = function(e) {
+    $("table.expenses-table tbody tr").eq(i).css('color', 'black');
+    $("table.expenses-table tbody tr").eq(i+1).css('color', 'red');
+    i++;
+  };
+}
+
+// Set up an event listener for when the 'speak' button is clicked.
+$("#speak-button").click(function() {
+  array.forEach(function(val) {
+    $("table.expenses-table tbody tr").eq(0).css('color', 'red');
+    speak(val);
+  });
+});
+$("#pause-button").click(function() {
+  speechSynthesis.pause();
+});
+$("#resume-button").click(function() {
+  speechSynthesis.resume();
+});
+$("#stop-button").click(function() {
+  speechSynthesis.cancel();
+});
+
 })
 </script>
