@@ -2,7 +2,7 @@
 
 <p id="notice"><%= notice %></p>
 
-<%= @expense_group.name %>
+<h1><%= @expense_group.name %></h1>
 
 <div class="expenses-form">
 <%= form_with(model: @expense, local: true) do |form| %>
@@ -78,7 +78,7 @@
     <%= form.hidden_field :expense_group_id, value: @expense_group.id %>
 
     <div class="actions tooltip-trigger">
-      <%= form.submit 'Enter' %>
+      <%= form.submit 'Enter', class: 'btn btn-primary' %>
       <div class="tooltip">
         <i class="fas fa-lightbulb"></i> Enter key also works
       </div>
@@ -89,6 +89,9 @@
   </div>
 <% end %>
 </div>
+
+<%= link_to 'Download', "/expense_groups/#{@expense_group.id}/download", class: 'btn btn-secondary' %>
+<%= link_to 'Delete All', "/expense_groups/#{@expense_group.id}/expenses", class: 'btn btn-secondary', method: :delete, data: { confirm: 'Are you sure?' } %>
 
 <table class="expenses-table">
   <thead>
@@ -114,13 +117,7 @@
     <% end %>
   </tbody>
 </table>
-<br>
 
-<%= link_to 'Manage Categories', categories_path %>
-<%= link_to 'Manage Sub Categories', sub_categories_path %>
-<br>
-<%= link_to 'Download Expense Group', "/expense_groups/#{@expense_group.id}/download", class: :btn, method: :get %>
-<%= link_to 'Clear All', "/expense_groups/#{@expense_group.id}/expenses", class: :btn, method: :delete, data: { confirm: 'Are you sure?' } %>
 </div>
 
 <script>
@@ -142,7 +139,3 @@ $(function(){
   }
 })
 </script>
-
-
-<%= link_to 'Edit', edit_expense_group_path(@expense_group) %> |
-<%= link_to 'Back', expense_groups_path %>
