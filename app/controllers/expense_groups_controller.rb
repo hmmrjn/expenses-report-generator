@@ -1,3 +1,5 @@
+require 'csv'
+
 class ExpenseGroupsController < ApplicationController
   before_action :set_expense_group, only: [:show, :edit, :update, :destroy, :destroy_all_expenses, :download, :download_excel_plain]
 
@@ -60,8 +62,8 @@ class ExpenseGroupsController < ApplicationController
     redirect_to @expense_group, notice: 'Expenses were successfully destroyed.'
   end
 
-  # GET expense_groups/1/download
-  def download
+  # GET expense_groups/1/download_csv
+  def download_csv
     @expenses = Expense.where(expense_group_id: params[:id]).order(:date)
     header = ['Date', 'Category', 'Amount', 'Sub Category']
     generated_csv = CSV.generate(row_sep: "\r\n") do |csv|

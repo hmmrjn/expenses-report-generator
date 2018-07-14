@@ -91,7 +91,7 @@
 </div>
 <p>
   <%= link_to 'Download', '#', class: 'btn btn-secondary', 'data-toggle' => 'collapse', 'data-target' => '#collapseDownload', 'aria-expanded' => 'false', 'aria-controls' => 'collapseDonwload'  %>
-  <%= link_to 'Dictate', "/expense_groups/#{@expense_group.id}/expenses", class: 'btn btn-secondary', 'data-toggle' => 'collapse', 'data-target' => '#collapseExample', 'aria-expanded' => 'false', 'aria-controls' => 'collapseExample' %>
+  <%= link_to 'Dictate', "#", class: 'btn btn-secondary', 'data-toggle' => 'collapse', 'data-target' => '#collapseDictate', 'aria-expanded' => 'false', 'aria-controls' => 'collapseDictate' %>
   <%= link_to 'Delete All', "/expense_groups/#{@expense_group.id}/expenses", class: 'btn btn-danger', method: :delete, data: { confirm: 'Are you sure?' } %>
 </p>
 <div class="collapse" id="collapseDownload">
@@ -99,29 +99,29 @@
     <div class="card-body">
       <h5>Download Expenses</h5>
       <%= link_to 'Excel', "/expense_groups/#{@expense_group.id}/download_excel_plain", class: 'btn btn-primary' %>
-      <%= link_to 'CSV', "/expense_groups/#{@expense_group.id}/download", class: 'btn btn-primary' %>
+      <%= link_to 'CSV', "/expense_groups/#{@expense_group.id}/download_csv", class: 'btn btn-primary' %>
     </div>
   </div>
 </div>
-<div class="text-to-speech-form-wrapper">
-<div class="collapse" id="collapseExample">
-  <div class="card card-body">
-    <h2>Dictate Expenses</h2>
-    <p id="msg"></p>
-    <label for="voice-name">Voice</label>
-    <select name="voice-name" id="voice-name"></select>
-    <br>
-    <label for="rate">Speed</label>
-    <input type="range" min="0" max="2" step="0.25" name="rate" id="rate" value="1">
-    <br>
-    <div class="btn-group" role="group" aria-label="Basic example">
-      <button id="speak-button" class="btn btn-primary">Speak</button>
-      <button id="pause-button" class="btn btn-secondary">Pause</button>
-      <button id="resume-button" class="btn btn-secondary">Resume</button>
-      <button id="stop-button" class="btn btn-secondary">Stop</button>
+<div class="collapse" id="collapseDictate">
+  <div class="card">
+    <div class="card-body">
+      <h5>Dictate Expenses</h5>
+      <p id="msg"></p>
+      <label for="voice-name">Voice:</label>
+      <select name="voice-name" id="voice-name"></select>
+      <br>
+      <label for="rate">Speed:</label>
+      <input type="range" min="0" max="2" step="0.25" name="rate" id="rate" value="1">
+      <br>
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button id="speak-button" class="btn btn-primary">Speak</button>
+        <button id="pause-button" class="btn btn-secondary">Pause</button>
+        <button id="resume-button" class="btn btn-secondary">Resume</button>
+        <button id="stop-button" class="btn btn-secondary">Stop</button>
+      </div>
     </div>
   </div>
-</div>
 </div>
 
 
