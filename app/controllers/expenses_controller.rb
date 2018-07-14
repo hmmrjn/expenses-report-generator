@@ -115,6 +115,29 @@ class ExpensesController < ApplicationController
       filename: "expenses-#{@expenses.last.date.strftime("%Y-%m")}.xlsx"
   end
 
+  # GET /expenses/download_sum_excel
+  def download_sums_excel
+    book = RubyXL::Workbook.new
+    sheet = book[0]
+    @sub_catgories = SubCategory.all.order(:name)
+    lastest_i = nil
+    @sub_catgories.each_with_index do |sub_category, i|
+      sheet.add_cell(i, 0, sub_category.date_span)
+      sheet.add_cell(i, 1, sub_category.category.name.upcase)
+      c = sheet.add_cell(i, 2, sub_category.expenses.sum(:amount))
+      c.set_number_format("[$¥-ja-JP]* #,###")
+      sheet.add_cell(i, 3, sub_category.name.titleize)
+      lastest_i = i
+    end
+    sheet.add_cell(lastest_i+1, 0, '', 'Total')
+    c = sheet.add_cell(lastest_i+1, 2, '', "SUM(C1:C#{lastest_i+1})")
+    c.set_number_format("[$¥-ja-JP]* #,###")
+    @expenses = Expense.all.order(:date)
+    send_data book.stream.read,
+      type: 'application/excel',
+      filename: "expenses-sums-#{@expenses.last.date.strftime("%Y-%m")}.xlsx"
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_expense
