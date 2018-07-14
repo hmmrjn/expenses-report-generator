@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   root 'expense_groups#index'
   get 'expense_groups/:id/download' => 'expense_groups#download'
+  get 'expense_groups/:id/download_excel_plain' => 'expense_groups#download_excel_plain'
   get 'expenses/download' => 'expenses#download'
   resources :expenses
   resources :expense_groups
