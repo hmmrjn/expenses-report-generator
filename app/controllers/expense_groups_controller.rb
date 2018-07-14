@@ -77,7 +77,7 @@ class ExpenseGroupsController < ApplicationController
       type: 'text/csv; charset=uft-8'
   end
 
-  # GET /expenses/1/download_excel_plain
+  # GET /expense_groups/1/download_excel_plain
   def download_excel_plain
     book = RubyXL::Workbook.new
     sheet = book[0]
