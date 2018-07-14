@@ -2,6 +2,18 @@
 
 <p id="notice"><%= notice %></p>
 <h1>All Expenses</h1>
+<p>
+  <%= link_to 'Download All Expenses', '#', class: 'btn btn-secondary', 'data-toggle' => 'collapse', 'data-target' => '#collapseDownload', 'aria-expanded' => 'false', 'aria-controls' => 'collapseDonwload'  %>
+</p>
+<div class="collapse" id="collapseDownload">
+  <div class="card">
+    <div class="card-body">
+      <h5>Download Expenses</h5>
+      <%= link_to 'Excel', "/expenses/download_excel_plain", class: 'btn btn-primary' %>
+      <%= link_to 'CSV', "/expenses/download_csv", class: 'btn btn-primary' %>
+    </div>
+  </div>
+</div>
 <table class="expenses-table">
   <thead>
     <tr>
@@ -51,12 +63,6 @@
     <% end %>
   </tbody>
 </table>
-<br>
-
-<%= link_to 'Manage Categories', categories_path %>
-<%= link_to 'Manage Sub Categories', sub_categories_path %>
-<br>
-<%= link_to 'Download All Expenses', expenses_download_path, class: :btn %>
 </div>
 
 <script>

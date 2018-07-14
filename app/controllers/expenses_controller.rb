@@ -81,8 +81,8 @@ class ExpensesController < ApplicationController
     redirect_to expenses_url, notice: 'Expense was successfully destroyed.'
   end
 
-  #GET expenses/download
-  def download
+  #GET expenses/download_csv
+  def download_csv
     @expenses = Expense.all.order(:date)
     header = ['Date', 'Category', 'Amount', 'Sub Category']
     generated_csv = CSV.generate(row_sep: "\r\n") do |csv|
@@ -94,6 +94,25 @@ class ExpensesController < ApplicationController
     send_data generated_csv.encode(Encoding::CP932, invalid: :replace, undef: :replace),
       filename: "expenses-#{@expenses.last.date.strftime("%Y-%m")}.csv",
       type: 'text/csv; charset=uft-8'
+  end
+
+  # GET /expenses/download_excel_plain
+  def download_excel_plain
+    book = RubyXL::Workbook.new
+    sheet = book[0]
+    @expenses = Expense.all.order(:date)
+    @expenses.each_with_index do |expense, i|
+      c = sheet.add_cell(i, 0)
+      c.set_number_format('yyyy/m/d')
+      c.change_contents(expense.date)
+      sheet.add_cell(i, 1, expense.sub_category.category.name.upcase)
+      c = sheet.add_cell(i, 2, expense.amount)
+      c.set_number_format("[$¥-ja-JP]* #,##0_-")
+      sheet.add_cell(i, 3, expense.sub_category.name.titleize)
+    end
+    send_data book.stream.read,
+      type: 'application/excel',
+      filename: "expenses-#{@expenses.last.date.strftime("%Y-%m")}.xlsx"
   end
 
   private

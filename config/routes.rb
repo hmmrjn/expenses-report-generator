@@ -2,7 +2,8 @@ Rails.application.routes.draw do
   root 'expense_groups#index'
   get 'expense_groups/:id/download_csv' => 'expense_groups#download_csv'
   get 'expense_groups/:id/download_excel_plain' => 'expense_groups#download_excel_plain'
-  get 'expenses/download' => 'expenses#download'
+  get 'expenses/download_csv' => 'expenses#download_csv'
+  get 'expenses/download_excel_plain' => 'expenses#download_excel_plain'
   resources :expenses
   resources :expense_groups
   delete 'expense_groups/:id/expenses' => 'expense_groups#destroy_all_expenses'
