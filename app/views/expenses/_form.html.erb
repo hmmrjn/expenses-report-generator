@@ -26,6 +26,11 @@
     <%= form.number_field :amount %>
   </div>
 
+  <div class="field">
+    <%= form.label :expense_group_id %>
+    <%= form.select :expense_group_id, options_from_collection_for_select(@expense_groups, :id, :name, selected: expense.expense_group.id) %>
+  </div>
+
   <div class="actions">
     <%= form.submit %>
   </div>

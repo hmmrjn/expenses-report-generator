@@ -23,6 +23,7 @@ class ExpensesController < ApplicationController
   # GET /expenses/1/edit
   def edit
     @sub_categories = SubCategory.all
+    @expense_groups = ExpenseGroup.all
   end
 
   # POST /expenses
@@ -69,7 +70,7 @@ class ExpensesController < ApplicationController
   # PATCH/PUT /expenses/1
   def update
     if @expense.update(expense_params)
-      redirect_to @expense, notice: 'Expense was successfully updated.'
+      redirect_to @expense.expense_group, notice: 'Expense was successfully updated.'
     else
       render :edit
     end
