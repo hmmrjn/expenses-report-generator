@@ -108,7 +108,7 @@ class ExpensesController < ApplicationController
       c.change_contents(expense.date)
       sheet.add_cell(i, 1, expense.sub_category.category.name.upcase)
       c = sheet.add_cell(i, 2, expense.amount)
-      c.set_number_format("[$¥-ja-JP]* #,##0_-")
+      c.set_number_format("[$¥-ja-JP]* #,###")
       sheet.add_cell(i, 3, expense.sub_category.name.titleize)
     end
     send_data book.stream.read,
@@ -130,7 +130,7 @@ class ExpensesController < ApplicationController
       sheet.add_cell(i, 3, sub_category.name.titleize)
       lastest_i = i
     end
-    sheet.add_cell(lastest_i+1, 0, '', 'Total')
+    sheet.add_cell(lastest_i+1, 0, 'Total')
     c = sheet.add_cell(lastest_i+1, 2, '', "SUM(C1:C#{lastest_i+1})")
     c.set_number_format("[$¥-ja-JP]* #,###")
     @expenses = Expense.all.order(:date)

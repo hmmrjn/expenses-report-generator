@@ -17,7 +17,7 @@ class ExpenseGroupsController < ApplicationController
     end
 
     @expense = Expense.new
-    @expenses = @expense_group.expenses.order(date: :desc)
+    @expenses = @expense_group.expenses.order({date: :asc, id: :asc})
     @sub_categories = SubCategory.all
   end
 
@@ -88,7 +88,7 @@ class ExpenseGroupsController < ApplicationController
       c.change_contents(expense.date)
       sheet.add_cell(i, 1, expense.sub_category.category.name.upcase)
       c = sheet.add_cell(i, 2, expense.amount)
-      c.set_number_format("[$¥-ja-JP]* #,##0_-")
+      c.set_number_format("[$¥-ja-JP]* #,###")
       sheet.add_cell(i, 3, expense.sub_category.name.titleize)
     end
     send_data book.stream.read,
