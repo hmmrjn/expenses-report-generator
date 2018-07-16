@@ -179,22 +179,9 @@ $(function(){
 // Web Speech Synthesis API
 let array = [];
 $("table.expenses-table tbody tr").each(function() {
-  let text = "";
-  let date = $(this)
-    .children()
-    .first()
-    .text();
-  text += moment(date).format("MMMM Do"); //2018-1-2 to January 2nd
-  text += ". price ";
-  text += $(this)
-    .children()
-    .eq(3)
-    .text();
-  text += ", ";
-  text += $(this)
-    .children()
-    .eq(2)
-    .text();
+  let row = $(this).children().toArray().map( tr => tr.innerText )
+  let date = moment(row[0]).format("MMMM Do"); //2018-1-2 to January 2nd
+  let text = `${date}. price ${row[3]}, ${row[2]}`;   // [3]:ammount [2]:sub_category
   array.push(text);
 });
 
@@ -204,12 +191,14 @@ if (!"speechSynthesis" in window) {
 }
 // Fetch the list of voices and populate the voice options.
 function loadVoices() {
-// Fetch the available voices in English US.
-let voices = speechSynthesis .getVoices() .filter(voice => voice.lang == "en-US");
-$("#voice-name").empty(); voices.forEach(function(voice, i) { $option = $("<option>")
-      .val(voice.name)
-      .text(voice.name)
-      .prop("selected", voice.name === "Google US English");
+  // Fetch the available voices in English US.
+  let voices = speechSynthesis .getVoices() .filter(voice => voice.lang == "en-US");
+  $("#voice-name").empty();
+  voices.forEach(function(voice, i) {
+    $option = $("<option>")
+        .val(voice.name)
+        .text(voice.name)
+        .prop("selected", voice.name === "Google US English");
     $("#voice-name").append($option);
   });
 }
