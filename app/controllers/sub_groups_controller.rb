@@ -24,10 +24,12 @@ class SubGroupsController < ApplicationController
   # GET /sub_groups/new
   def new
     @sub_group = SubGroup.new
+    @groups = Group.all
   end
 
   # GET /sub_groups/1/edit
   def edit
+    @groups = Group.all
   end
 
   # POST /sub_groups
@@ -104,6 +106,6 @@ class SubGroupsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def sub_group_params
-      params.require(:sub_group).permit(:name)
+      params.require(:sub_group).permit(:name, :group_id)
     end
 end
