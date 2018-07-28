@@ -10,16 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_28_132721) do
+ActiveRecord::Schema.define(version: 2018_07_28_141941) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "expense_groups", force: :cascade do |t|
-    t.text "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -30,9 +24,9 @@ ActiveRecord::Schema.define(version: 2018_07_28_132721) do
     t.integer "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "expense_group_id"
-    t.index ["expense_group_id"], name: "index_expenses_on_expense_group_id"
+    t.integer "sub_group_id"
     t.index ["sub_category_id"], name: "index_expenses_on_sub_category_id"
+    t.index ["sub_group_id"], name: "index_expenses_on_sub_group_id"
   end
 
   create_table "groups", force: :cascade do |t|
@@ -47,6 +41,12 @@ ActiveRecord::Schema.define(version: 2018_07_28_132721) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_sub_categories_on_category_id"
+  end
+
+  create_table "sub_groups", force: :cascade do |t|
+    t.text "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

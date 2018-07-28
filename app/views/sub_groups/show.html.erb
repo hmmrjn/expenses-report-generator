@@ -2,7 +2,7 @@
 
 <p id="notice"><%= notice %></p>
 
-<h1><%= @expense_group.name %></h1>
+<h1><%= @sub_group.name %></h1>
 
 <div class="expenses-form">
 <%= form_with(model: @expense, local: true) do |form| %>
@@ -75,7 +75,7 @@
     </datalist>
     <% end %>
 
-    <%= form.hidden_field :expense_group_id, value: @expense_group.id %>
+    <%= form.hidden_field :sub_group_id, value: @sub_group.id %>
 
     <div class="actions tooltip-trigger">
       <%= form.submit 'Enter', class: 'btn btn-primary' %>
@@ -92,14 +92,14 @@
 <p>
   <%= link_to 'Download', '#', class: 'btn btn-secondary', 'data-toggle' => 'collapse', 'data-target' => '#collapseDownload', 'aria-expanded' => 'false', 'aria-controls' => 'collapseDonwload'  %>
   <%= link_to 'Dictate', "#", class: 'btn btn-secondary', 'data-toggle' => 'collapse', 'data-target' => '#collapseDictate', 'aria-expanded' => 'false', 'aria-controls' => 'collapseDictate' %>
-  <%= link_to 'Delete All', "/expense_groups/#{@expense_group.id}/expenses", class: 'btn btn-danger', method: :delete, data: { confirm: 'Are you sure?' } %>
+  <%= link_to 'Delete All', "/sub_groups/#{@sub_group.id}/expenses", class: 'btn btn-danger', method: :delete, data: { confirm: 'Are you sure?' } %>
 </p>
 <div class="collapse" id="collapseDownload">
   <div class="card">
     <div class="card-body">
       <h5>Download Expenses</h5>
-      <%= link_to 'Excel', "/expense_groups/#{@expense_group.id}/download_excel_plain", class: 'btn btn-primary' %>
-      <%= link_to 'CSV', "/expense_groups/#{@expense_group.id}/download_csv", class: 'btn btn-primary' %>
+      <%= link_to 'Excel', "/sub_groups/#{@sub_group.id}/download_excel_plain", class: 'btn btn-primary' %>
+      <%= link_to 'CSV', "/sub_groups/#{@sub_group.id}/download_csv", class: 'btn btn-primary' %>
     </div>
   </div>
 </div>

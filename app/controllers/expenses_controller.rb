@@ -23,7 +23,7 @@ class ExpensesController < ApplicationController
   # GET /expenses/1/edit
   def edit
     @sub_categories = SubCategory.all
-    @expense_groups = ExpenseGroup.all
+    @sub_groups = SubGroup.all
   end
 
   # POST /expenses
@@ -37,7 +37,7 @@ class ExpensesController < ApplicationController
     @last_date = session[:last_date]
     @expenses = Expense.all.order(date: :desc)
     @sub_categories = SubCategory.all
-    @expense_group = ExpenseGroup.find(params[:expense][:expense_group_id])
+    @sub_group = SubGroup.find(params[:expense][:sub_group_id])
 
     # if new subcat, ask for cat name
     subcat_na = params[:expense][:sub_category_name]
@@ -46,7 +46,7 @@ class ExpensesController < ApplicationController
       @unregistered_sub_category = true
       @sub_category_name = subcat_na
       @categories = Category.all
-      render 'expense_groups/show'
+      render 'sub_groups/show'
       return
     end
 
@@ -61,16 +61,16 @@ class ExpensesController < ApplicationController
     end
 
     if @expense.save
-      redirect_to @expense_group, notice: 'Expense was successfully created.'
+      redirect_to @sub_group, notice: 'Expense was successfully created.'
     else
-      render 'expense_groups/show'
+      render 'sub_groups/show'
     end
   end
 
   # PATCH/PUT /expenses/1
   def update
     if @expense.update(expense_params)
-      redirect_to @expense.expense_group, notice: 'Expense was successfully updated.'
+      redirect_to @expense.sub_group, notice: 'Expense was successfully updated.'
     else
       render :edit
     end
@@ -152,6 +152,6 @@ class ExpensesController < ApplicationController
           params[:expense][:sub_category_id] = subcat.id
         end
       end
-      params.require(:expense).permit(:date, :sub_category_id, :amount, :expense_group_id)
+      params.require(:expense).permit(:date, :sub_category_id, :amount, :sub_group_id)
     end
 end
