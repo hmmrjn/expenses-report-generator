@@ -18,7 +18,7 @@
 
   <div class="field">
     <%= form.label :group_id %>
-    <%= form.select :group_id, options_from_collection_for_select(@groups, :id, :name, selected: (sub_group.group)? sub_group.group.id : nil) %>
+    <%= form.select :group_id, options_from_collection_for_select(@groups, :id, :name, selected: (sub_group.group)? sub_group.group.id : (params[:group_id])? params[:group_id] : nil) %>
   </div>
 
   <div class="actions">
