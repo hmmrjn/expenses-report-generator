@@ -2,7 +2,7 @@
 
 <p id="notice"><%= notice %></p>
 
-<h1><%= @sub_group.name %></h1>
+<h1><%= link_to @sub_group.group.name, @sub_group.group %> ＞ <%= @sub_group.name %></h1>
 
 <div class="expenses-form">
 <%= form_with(model: @expense, local: true) do |form| %>

@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
-  resources :groups
-  root 'sub_groups#index'
+  root 'groups#index'
   get 'sub_groups/:id/download_csv' => 'sub_groups#download_csv'
   get 'sub_groups/:id/download_excel_plain' => 'sub_groups#download_excel_plain'
   get 'expenses/download_csv' => 'expenses#download_csv'
@@ -8,6 +7,7 @@ Rails.application.routes.draw do
   get 'expenses/download_sums_excel' => 'expenses#download_sums_excel'
   resources :expenses
   resources :sub_groups
+  resources :groups
   delete 'sub_groups/:id/expenses' => 'sub_groups#destroy_all_expenses'
   resources :sub_categories
   resources :categories
