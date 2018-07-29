@@ -8,6 +8,9 @@ class GroupsController < ApplicationController
 
   # GET /groups/1
   def show
+    sub_groups = SubGroup.where(group: @group)
+    @expenses = Expense.where(sub_group: sub_groups)
+    @expenses.order(:date, :category)
   end
 
   # GET /groups/new

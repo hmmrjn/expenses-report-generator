@@ -30,3 +30,32 @@
 
 <%= link_to 'Rename', edit_group_path(@group) %> |
 <%= link_to 'Back', groups_path %>
+
+<br>
+<br>
+<h2>Expenses in Sub Groups of this Group</h2>
+
+<table class="expenses-table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Category</th>
+      <th>Sub category</th>
+      <th>Amount</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @expenses.each do |expense| %>
+      <tr>
+        <td><%= expense.date %></td>
+        <td><%= expense.sub_category.category.name.upcase %></td>
+        <td><%= expense.sub_category.name.capitalize %></td>
+        <td align="right"><%= expense.amount.to_s(:delimited) %></td>
+        <td><%= link_to edit_expense_path(expense), title: 'Edit' do %><i class="fas fa-edit"></i><% end %></td>
+        <td><%= link_to expense, title: 'Delete', method: :delete, data: { confirm: 'Are you sure?' } do %><i class="fas fa-trash"></i><% end %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
