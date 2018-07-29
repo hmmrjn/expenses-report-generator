@@ -35,6 +35,8 @@
 <br>
 <h2>Expenses in Sub Groups of this Group</h2>
 
+<%= link_to 'Download', "/groups/#{@group.id}/download_excel", class: 'btn btn-primary' %>
+
 <table class="expenses-table">
   <thead>
     <tr>
@@ -64,6 +66,9 @@
 <br>
 
 <h2>Sums of each Sub Category</h2>
+
+<%= link_to 'Download', "/groups/#{@group.id}/download_sums_excel", class: 'btn btn-primary' %>
+
 <table class="expenses-table">
   <thead>
     <tr>
@@ -79,11 +84,7 @@
         <td><%= sub_category.date_span(@group.id) %></td>
         <td><%= sub_category.category.name.upcase %></td>
         <td><%= sub_category.name.titleize %></td>
-        <td>
-          <%= sub_groups = SubGroup.where(group: @group)
-          expenses = sub_category.expenses.where(sub_group: @sub_groups)
-          expenses.sum(:amount).to_s(:delimited) %>
-        </td>
+        <td><%= sub_category.expenses.where(sub_group: @sub_groups).sum(:amount).to_s(:delimited) %></td>
       </tr>
     <% end %>
   </tbody>

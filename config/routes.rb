@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   root 'groups#index'
+  get 'groups/:id/download_excel' => 'groups#download_excel'
+  get 'groups/:id/download_sums_excel' => 'groups#download_sums_excel'
   get 'sub_groups/:id/download_csv' => 'sub_groups#download_csv'
   get 'sub_groups/:id/download_excel_plain' => 'sub_groups#download_excel_plain'
   get 'expenses/download_csv' => 'expenses#download_csv'
