@@ -1,38 +1,35 @@
 <p id="notice"><%= notice %></p>
 
-<h1><%= @group.name %></h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th colspan="2"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @group.sub_groups.each do |sub_group| %>
-      <tr>
-        <td><%= link_to sub_group.name, sub_group %></td>
-        <td><%= link_to 'Edit', edit_sub_group_path(sub_group) %></td>
-        <td><%= link_to 'Destroy', sub_group, method: :delete, data: { confirm: 'Are you sure? All expenses in this group will be deleted.' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<h1><%= link_to 'Groups', groups_path %> ＞ <%= @group.name %></h1>
 
 <br>
 
-<%= link_to 'New Sub Group', new_sub_group_path(group_id: @group.id) %>
+<ul class="list-group">
+  <% @group.sub_groups.each do |sub_group| %>
+
+    <li class="list-group-item list-group-item-action d-flex justify-content-between p-0">
+      <%= link_to sub_group.name, sub_group, class: 'flex-grow-1 text-dark p-3' %>
+      <span>
+        <%= link_to edit_group_path(sub_group), title: 'Rename', class: 'd-inline-block text-dark m-3' do %>
+          <i class="fas fa-edit px-2"></i>
+        <% end %>
+        <%= link_to sub_group, title: 'Destroy', method: :delete, data: { confirm: 'Are you sure? All expenses in this group will be deleted.' }, class: 'd-inline-block text-danger m-3' do %>
+          <i class="fas fa-trash px-2"></i>
+        <% end %>
+      </span>
+    </li>
+  <% end %>
+</ul>
+
+<br>
+
+<%= link_to new_sub_group_path, class: 'btn btn-primary' do %>
+<i class="fas fa-plus mr-1"></i> New Sub Group
+<% end %>
 
 <br>
 <br>
 
-<%= link_to 'Rename', edit_group_path(@group) %> |
-<%= link_to 'Back', groups_path %>
-
-<br>
-<br>
 <h2>Expenses in Sub Groups of this Group</h2>
 
 <%= link_to 'Download', "/groups/#{@group.id}/download_excel", class: 'btn btn-primary' %>
