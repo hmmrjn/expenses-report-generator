@@ -59,3 +59,32 @@
     <% end %>
   </tbody>
 </table>
+
+<br>
+<br>
+
+<h2>Sums of each Sub Category</h2>
+<table class="expenses-table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Category</th>
+      <th>Sub category</th>
+      <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @sub_categories.each do |sub_category| %>
+      <tr>
+        <td><%= sub_category.date_span(@group.id) %></td>
+        <td><%= sub_category.category.name.upcase %></td>
+        <td><%= sub_category.name.titleize %></td>
+        <td>
+          <%= sub_groups = SubGroup.where(group: @group)
+          expenses = sub_category.expenses.where(sub_group: @sub_groups)
+          expenses.sum(:amount).to_s(:delimited) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
