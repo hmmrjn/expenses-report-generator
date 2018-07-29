@@ -10,7 +10,7 @@
     <li class="list-group-item list-group-item-action d-flex justify-content-between p-0">
       <%= link_to sub_group.name, sub_group, class: 'flex-grow-1 text-dark p-3' %>
       <span>
-        <%= link_to edit_group_path(sub_group), title: 'Rename', class: 'd-inline-block text-dark m-3' do %>
+        <%= link_to edit_sub_group_path(sub_group), title: 'Rename', class: 'd-inline-block text-dark m-3' do %>
           <i class="fas fa-edit px-2"></i>
         <% end %>
         <%= link_to sub_group, title: 'Destroy', method: :delete, data: { confirm: 'Are you sure? All expenses in this group will be deleted.' }, class: 'd-inline-block text-danger m-3' do %>
