@@ -1,4 +1,4 @@
-<%= form_with(model: group, local: true) do |form| %>
+<%= form_with model: group, local: true do |form| %>
   <% if group.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(group.errors.count, "error") %> prohibited this group from being saved:</h2>
@@ -11,12 +11,14 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+  <div class="input-group w-sm-50">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="inputGroup-name">Name</span>
+    </div>
+    <%= form.text_field :name, placeholder: 'e.g. 2018 January', class: 'form-control', 'aria-label' => 'Sizing example input', 'aria-describedby' => 'inputGroup-name' %>
+    <div class="input-group-append">
+      <%= form.submit class: 'btn btn-primary' %>
+    </div>
   </div>
 
-  <div class="actions">
-    <%= form.submit %>
-  </div>
 <% end %>
