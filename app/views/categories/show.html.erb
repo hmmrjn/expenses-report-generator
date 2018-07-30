@@ -1,18 +1,33 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @category.name.upcase %>
-</p>
+<h1><%= link_to 'Categories', categories_path %> ＞ <%= @category.name.upcase %></h1>
 
-<p>
-  <strong>Sub Categories:</strong>
-</p>
-<ul>
-<% @category.sub_categories.each do |sub_category| %>
-  <li><%= link_to sub_category.name.capitalize, sub_category %></li>
-<% end %>
+<br>
+
+<h2 class="text-muted">Sub Categories</h2>
+
+<ul class="list-group">
+  <% @category.sub_categories.each do |sub_category| %>
+
+    <li class="list-group-item list-group-item-action d-flex justify-content-between p-0">
+      <%= link_to sub_category.name.titleize, sub_category, class: 'flex-grow-1 text-dark p-3' %>
+      <span>
+        <%= link_to edit_sub_category_path(sub_category), title: 'Rename', class: 'd-inline-block text-dark m-3' do %>
+          <i class="fas fa-edit px-2"></i>
+        <% end %>
+        <%= link_to sub_category, title: 'Destroy', method: :delete, data: { confirm: 'Are you sure? All expenses in this group will be deleted.' }, class: 'd-inline-block text-danger m-3' do %>
+          <i class="fas fa-trash px-2"></i>
+        <% end %>
+      </span>
+    </li>
+  <% end %>
 </ul>
 
-<%= link_to 'Edit', edit_category_path(@category) %> |
-<%= link_to 'Back', categories_path %>
+<br>
+
+<%= link_to new_sub_category_path(category_id: @category.id), class: 'btn btn-primary' do %>
+<i class="fas fa-plus mr-1"></i> New Sub Category
+<% end %>
+
+<br>
+<br>
