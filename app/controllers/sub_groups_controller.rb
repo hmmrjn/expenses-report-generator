@@ -24,6 +24,7 @@ class SubGroupsController < ApplicationController
   # GET /sub_groups/new
   def new
     @sub_group = SubGroup.new
+    @sub_group.group_id = params[:group_id] if params[:group_id]
     @groups = Group.all
   end
 

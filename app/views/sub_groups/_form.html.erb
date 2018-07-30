@@ -11,17 +11,21 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="inputGroup-name">Name</span>
+    </div>
+    <%= form.text_field :name, placeholder: 'e.g.  non nominative', class: 'form-control', 'aria-label' => 'Sizing example input', 'aria-describedby' => 'inputGroup-name' %>
   </div>
 
-  <div class="field">
-    <%= form.label :group_id %>
-    <%= form.select :group_id, options_from_collection_for_select(@groups, :id, :name, selected: (sub_group.group)? sub_group.group.id : (params[:group_id])? params[:group_id] : nil) %>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="input-group-text" for="inputGroupSelectGroupId">Group</label>
+    </div>
+    <%= form.select :group_id, options_from_collection_for_select(@groups, :id, :name, selected: (sub_group.group_id)? sub_group.group_id : nil), {}, { id: 'inputGroupSelectGroupId', class: 'custom-select'} %>
+    <div class="input-group-append">
+      <%= form.submit class: 'btn btn-primary' %>
+    </div>
   </div>
 
-  <div class="actions">
-    <%= form.submit %>
-  </div>
 <% end %>
