@@ -6,7 +6,7 @@ class ExpensesController < ApplicationController
   # GET /expenses
   def index
     @expenses = Expense.all.order(date: :desc)
-    @sub_catgories = SubCategory.all.order(:name)
+    @sub_categories = SubCategory.all.order(:name)
   end
 
   # GET /expenses/1

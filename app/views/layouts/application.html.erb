@@ -24,11 +24,11 @@
             <li class="nav-item <%= 'active' if current_page?(groups_path) %>">
               <%= link_to 'Groups', groups_path, class: "nav-link" %>
             </li>
-            <li class="nav-item <%= 'active' if current_page?(expenses_path) %>">
-              <%= link_to 'All Expenses', expenses_path, class: "nav-link" %>
-            </li>
             <li class="nav-item <%= 'active' if current_page?(categories_path) %>">
               <%= link_to 'Categories', categories_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item <%= 'active' if current_page?(expenses_path) %>">
+              <%= link_to 'Every Expense', expenses_path, class: "nav-link" %>
             </li>
           </ul>
         </div>
