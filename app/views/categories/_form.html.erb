@@ -11,12 +11,17 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+  <div class="input-group w-sm-50">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="inputCategory-name">Name</span>
+    </div>
+    <%= form.text_field :name, placeholder: 'e.g. transportation fee', class: 'form-control', 'aria-describedby' => 'inputCategory-name' %>
   </div>
 
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+  <br>
+  <br>
+
+  <%= form.submit class: 'btn btn-primary mr-2' %>
+  <%= link_to 'Cancel', categories_path, class: 'btn btn-outline-secondary' %>
+
 <% end %>

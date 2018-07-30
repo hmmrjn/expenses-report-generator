@@ -3,7 +3,7 @@ class SubCategoriesController < ApplicationController
 
   # GET /sub_categories
   def index
-    @sub_categories = SubCategory.order(:category_id)
+    @sub_categories = SubCategory.order(:category_id, :name)
   end
 
   # GET /sub_categories/1
@@ -13,6 +13,7 @@ class SubCategoriesController < ApplicationController
   # GET /sub_categories/new
   def new
     @sub_category = SubCategory.new
+    @sub_category.category_id = params[:category_id] if params[:category_id]
     @categories = Category.all
   end
 

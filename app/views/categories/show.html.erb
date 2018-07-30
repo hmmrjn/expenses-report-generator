@@ -7,7 +7,7 @@
 <h2 class="text-muted">Sub Categories</h2>
 
 <ul class="list-group">
-  <% @category.sub_categories.each do |sub_category| %>
+  <% @category.sub_categories.order(:name).each do |sub_category| %>
 
     <li class="list-group-item list-group-item-action d-flex justify-content-between p-0">
       <%= link_to sub_category.name.titleize, sub_category, class: 'flex-grow-1 text-dark p-3' %>
