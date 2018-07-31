@@ -2,7 +2,7 @@ require 'csv'
 
 class ExpensesController < ApplicationController
   before_action :set_expense, only: [:show, :edit, :update, :destroy]
-  before_action :set_expenses, only: [:index, :download, :download_csv, :download_excel_plain]
+  before_action :set_expenses, only: [:index, :download, :download_csv, :download_excel]
 
   # GET /expenses
   def index
@@ -92,12 +92,12 @@ class ExpensesController < ApplicationController
       end
     end
     send_data generated_csv.encode(Encoding::CP932, invalid: :replace, undef: :replace),
-      filename: "expenses-#{@expenses.last.date.strftime("%Y-%m")}.csv",
+      filename: "every-expense-till-#{@expenses.last.date.strftime("%Y-%m")}.csv",
       type: 'text/csv; charset=uft-8'
   end
 
-  # GET /expenses/download_excel_plain
-  def download_excel_plain
+  # GET /expenses/download_excel
+  def download_excel
     book = RubyXL::Workbook.new
     sheet = book[0]
     @expenses.each_with_index do |expense, i|
@@ -111,7 +111,7 @@ class ExpensesController < ApplicationController
     end
     send_data book.stream.read,
       type: 'application/excel',
-      filename: "expenses-#{@expenses.last.date.strftime("%Y-%m")}.xlsx"
+      filename: "every-expense-till-#{@expenses.last.date.strftime("%Y-%m")}.xlsx"
   end
 
   # GET /expenses/download_sum_excel
@@ -134,7 +134,7 @@ class ExpensesController < ApplicationController
     @expenses = Expense.all.order(:date)
     send_data book.stream.read,
       type: 'application/excel',
-      filename: "expenses-sums-#{@expenses.last.date.strftime("%Y-%m")}.xlsx"
+      filename: "every-expense-sums-till-#{@expenses.last.date.strftime("%Y-%m")}.xlsx"
   end
 
   private

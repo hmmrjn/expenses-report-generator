@@ -1,7 +1,7 @@
 require 'csv'
 
 class SubGroupsController < ApplicationController
-  before_action :set_sub_group, only: [:show, :edit, :update, :destroy, :destroy_all_expenses, :download, :download_excel_plain]
+  before_action :set_sub_group, only: [:show, :edit, :update, :destroy, :destroy_all_expenses, :download, :download_excel]
 
   # GET /sub_groups
   def index
@@ -80,8 +80,8 @@ class SubGroupsController < ApplicationController
       type: 'text/csv; charset=uft-8'
   end
 
-  # GET /sub_groups/1/download_excel_plain
-  def download_excel_plain
+  # GET /sub_groups/1/download_excel
+  def download_excel
     book = RubyXL::Workbook.new
     sheet = book[0]
     @expenses = Expense.where(sub_group_id: params[:id]).order(:date)

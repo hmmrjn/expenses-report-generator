@@ -3,9 +3,9 @@ Rails.application.routes.draw do
   get 'groups/:id/download_excel' => 'groups#download_excel'
   get 'groups/:id/download_sums_excel' => 'groups#download_sums_excel'
   get 'sub_groups/:id/download_csv' => 'sub_groups#download_csv'
-  get 'sub_groups/:id/download_excel_plain' => 'sub_groups#download_excel_plain'
+  get 'sub_groups/:id/download_excel' => 'sub_groups#download_excel'
   get 'expenses/download_csv' => 'expenses#download_csv'
-  get 'expenses/download_excel_plain' => 'expenses#download_excel_plain'
+  get 'expenses/download_excel' => 'expenses#download_excel'
   get 'expenses/download_sums_excel' => 'expenses#download_sums_excel'
   resources :expenses
   resources :sub_groups
