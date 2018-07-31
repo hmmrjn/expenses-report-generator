@@ -96,8 +96,7 @@ class GroupsController < ApplicationController
 
     def set_expenses
       sub_groups = SubGroup.where(group: @group)
-      @expenses = Expense.where(sub_group: sub_groups)
-      @expenses.order(:date, :category)
+      @expenses = Expense.where(sub_group: sub_groups).joins(sub_category: :category).order(:date, 'categories.name', 'sub_categories.name', :amount)
     end
 
     def set_sub_categories

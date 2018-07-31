@@ -2,10 +2,10 @@ require 'csv'
 
 class ExpensesController < ApplicationController
   before_action :set_expense, only: [:show, :edit, :update, :destroy]
+  before_action :set_expenses, only: [:index, :download, :download_csv, :download_excel_plain]
 
   # GET /expenses
   def index
-    @expenses = Expense.all.order(date: :desc)
     @sub_categories = SubCategory.all.order(:name)
   end
 
@@ -84,7 +84,6 @@ class ExpensesController < ApplicationController
 
   #GET expenses/download_csv
   def download_csv
-    @expenses = Expense.all.order(:date)
     header = ['Date', 'Category', 'Amount', 'Sub Category']
     generated_csv = CSV.generate(row_sep: "\r\n") do |csv|
       csv << header
@@ -101,7 +100,6 @@ class ExpensesController < ApplicationController
   def download_excel_plain
     book = RubyXL::Workbook.new
     sheet = book[0]
-    @expenses = Expense.all.order(:date)
     @expenses.each_with_index do |expense, i|
       c = sheet.add_cell(i, 0)
       c.set_number_format('yyyy/m/d')
@@ -143,6 +141,10 @@ class ExpensesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_expense
       @expense = Expense.find(params[:id])
+    end
+
+    def set_expenses
+      @expenses = Expense.all.joins(sub_category: :category).order(:date, 'categories.name', 'sub_categories.name', :amount)
     end
 
     # Only allow a trusted parameter "white list" through.
