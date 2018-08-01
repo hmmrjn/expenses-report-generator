@@ -4,30 +4,57 @@
 
 <div class="card">
   <div class="card-body">
-    <h4 class="card-title">Sub Categories <small class="text-muted">statistics</small></h4>
-    <div id="donutchart" style="width: 800px; height: 450px;"></div>
+    <h4 class="card-title">Categories <small class="text-muted">statistics</small></h4>
+    <div id="categories_donutchart" style="width: 800px; height: 450px;"></div>
   </div>
 </div>
+
+<br>
+
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title">Sub Categories <small class="text-muted">statistics</small></h4>
+    <div id="sub_categories_donutchart" style="width: 800px; height: 450px;"></div>
+  </div>
+</div>
+
+<br>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
   google.charts.load("current", {packages:["corechart"]});
+
+  // sub_categories doughnut chart
+  google.charts.setOnLoadCallback(drawChart);
+  // categories doughnut chart
   google.charts.setOnLoadCallback(drawChart);
   function drawChart() {
     var data = google.visualization.arrayToDataTable([
       ['SubCategory', 'Amount'],
-      <% @array.each do |row| %>
-          ['<%= row[:name].titleize %>', <%= row[:amount] %>],
+      <% @categories_array.each do |row| %>
+          ['<%= row[:name].upcase %>', <%= row[:amount] %>],
       <% end %>
     ]);
-
     var options = {
       pieHole: 0.4,
       sliceVisibilityThreshold: .02,
       backgroundColor: { fill:'transparent' }
     };
+    var chart = new google.visualization.PieChart(document.getElementById('categories_donutchart'));
+    chart.draw(data, options);
 
-    var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+    var data = google.visualization.arrayToDataTable([
+      ['SubCategory', 'Amount'],
+      <% @sub_categories_array.each do |row| %>
+          ['<%= row[:name].titleize %>', <%= row[:amount] %>],
+      <% end %>
+    ]);
+    var options = {
+      pieHole: 0.4,
+      sliceVisibilityThreshold: .02,
+      backgroundColor: { fill:'transparent' }
+    };
+    var chart = new google.visualization.PieChart(document.getElementById('sub_categories_donutchart'));
     chart.draw(data, options);
   }
 </script>
