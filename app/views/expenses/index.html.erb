@@ -1,5 +1,3 @@
-<div class="container">
-
 <p id="notice"><%= notice %></p>
 
 <h1>Every Expense</h1>
@@ -8,93 +6,92 @@
 
 <div class="card">
 
-  <div class="card-header">
-    <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
-      <li class="nav-item">
-        <a class="nav-link active" id="expenses-tab" data-toggle="tab" href="#expenses" role="tab" aria-controls="expenses" aria-selected="true">Expenses</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" id="sums-tab" data-toggle="tab" href="#sums" role="tab" aria-controls="sums" aria-selected="false">Sums</a>
-      </li>
-    </ul>
-  </div>
-
-  <div class="card-body">
-    <div class="tab-content" id="myTabContent">
-
-      <div class="tab-pane fade show active" id="expenses" role="tabpanel" aria-labelledby="expenses-tab">
-        <div class="d-flex justify-content-between align-items-center">
-          <h2>
-            Expenses
-            <small class="text-muted"> in Every Group</small>
-          </h2>
-          <%= link_to '/expenses/download_excel', class: 'btn btn-success' do %>
-            <i class="fas fa-file-excel mr-1"></i> Download for Excel
-          <% end %>
-        </div>
-        <br>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">Date</th>
-              <th scope="col">Category</th>
-              <th scope="col">Sub category</th>
-              <th scope="col" class="text-right">Amount</th>
-              <th scope="col" colspan="2"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @expenses.each do |expense| %>
-              <tr scope="row">
-                <td><%= expense.date %></td>
-                <td><%= expense.sub_category.category.name.upcase %></td>
-                <td><%= expense.sub_category.name.capitalize %></td>
-                <td class="text-right"><%= expense.amount.to_s(:delimited) %></td>
-                <td class="text-center"><%= link_to edit_expense_path(expense), title: 'Edit' do %><i class="fas fa-edit text-dark"></i><% end %></td>
-                <td class="text-center"><%= link_to expense, title: 'Delete', method: :delete, data: { confirm: 'Are you sure?' } do %><i class="fas fa-trash text-danger"></i><% end %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="tab-pane fade" id="sums" role="tabpanel" aria-labelledby="sums-tab">
-        <div class="d-flex justify-content-between align-items-center">
-          <h2>
-            Sums
-            <small class="text-muted"> of each Sub Category</small>
-          </h2>
-          <%= link_to '/expenses/download_sums_excel', class: 'btn btn-success' do %>
-            <i class="fas fa-file-excel mr-1"></i> Download for Excel
-          <% end %>
-        </div>
-        <br>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">Date</th>
-              <th scope="col">Category</th>
-              <th scope="col">Sub category</th>
-              <th scope="col" class="text-right">Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @sub_categories.each do |sub_category| %>
-              <tr scope="row">
-                <td><%= sub_category.date_span %></td>
-                <td><%= sub_category.category.name.upcase %></td>
-                <td><%= sub_category.name.titleize %></td>
-                <td class="text-right"><%= sub_category.expenses.sum(:amount).to_s(:delimited) %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-
-    </div>
-  </div>
-
+<div class="card-header">
+  <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="expenses-tab" data-toggle="tab" href="#expenses" role="tab" aria-controls="expenses" aria-selected="true">Expenses</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="sums-tab" data-toggle="tab" href="#sums" role="tab" aria-controls="sums" aria-selected="false">Sums</a>
+    </li>
+  </ul>
 </div>
+
+<div class="card-body">
+  <div class="tab-content" id="myTabContent">
+
+    <div class="tab-pane fade show active" id="expenses" role="tabpanel" aria-labelledby="expenses-tab">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>
+          Expenses
+          <small class="text-muted"> in Every Group</small>
+        </h2>
+        <%= link_to '/expenses/download_excel', class: 'btn btn-success' do %>
+          <i class="fas fa-file-excel mr-1"></i> Download for Excel
+        <% end %>
+      </div>
+      <br>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Category</th>
+            <th scope="col">Sub category</th>
+            <th scope="col" class="text-right">Amount</th>
+            <th scope="col" colspan="2"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @expenses.each do |expense| %>
+            <tr scope="row">
+              <td><%= expense.date %></td>
+              <td><%= expense.sub_category.category.name.upcase %></td>
+              <td><%= expense.sub_category.name.capitalize %></td>
+              <td class="text-right"><%= expense.amount.to_s(:delimited) %></td>
+              <td class="text-center"><%= link_to edit_expense_path(expense), title: 'Edit' do %><i class="fas fa-edit text-dark"></i><% end %></td>
+              <td class="text-center"><%= link_to expense, title: 'Delete', method: :delete, data: { confirm: 'Are you sure?' } do %><i class="fas fa-trash text-danger"></i><% end %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tab-pane fade" id="sums" role="tabpanel" aria-labelledby="sums-tab">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>
+          Sums
+          <small class="text-muted"> of each Sub Category</small>
+        </h2>
+        <%= link_to '/expenses/download_sums_excel', class: 'btn btn-success' do %>
+          <i class="fas fa-file-excel mr-1"></i> Download for Excel
+        <% end %>
+      </div>
+      <br>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Category</th>
+            <th scope="col">Sub category</th>
+            <th scope="col" class="text-right">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @sub_categories.each do |sub_category| %>
+            <tr scope="row">
+              <td><%= sub_category.date_span %></td>
+              <td><%= sub_category.category.name.upcase %></td>
+              <td><%= sub_category.name.titleize %></td>
+              <td class="text-right"><%= sub_category.expenses.sum(:amount).to_s(:delimited) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
 
 <br>
 <br>
