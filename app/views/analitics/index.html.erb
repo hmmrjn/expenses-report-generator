@@ -68,7 +68,7 @@
 
     // sub_categories periodical column chart
     var data = google.visualization.arrayToDataTable([
-      ['sub_categories', <%= @sub_categories.map { |sub_category| "'#{sub_category.name}'" }.join(', ').html_safe %>],
+      ['sub_categories', <%= @sub_category_names.map { |sub_category_name| "'#{sub_category_name}'" }.join(', ').html_safe %>],
       <% @montly_amounts_array.each do |month_set| %>
         ['<%= month_set[:month] %>', <%= month_set[:amounts].map { |amount| amount }.join(', ').html_safe %>],
       <% end %>
