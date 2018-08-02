@@ -5,7 +5,7 @@
 <div class="card">
   <div class="card-body">
     <h4 class="card-title">Categories <small class="text-muted">all periods statistics</small></h4>
-    <div id="categories_donutchart" style="width: 800px; height: 450px;"></div>
+    <div id="categories_donutchart" style="height: 450px;"></div>
   </div>
 </div>
 
@@ -14,7 +14,7 @@
 <div class="card">
   <div class="card-body">
     <h4 class="card-title">Sub Categories <small class="text-muted">all periods statistics</small></h4>
-    <div id="sub_categories_donutchart" style="width: 800px; height: 450px;"></div>
+    <div id="sub_categories_donutchart" style="height: 450px;"></div>
   </div>
 </div>
 
@@ -32,9 +32,9 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
   google.charts.load("current", {packages:["corechart"]});
-  google.charts.setOnLoadCallback(drawChart);
+  google.charts.setOnLoadCallback(drawCharts);
 
-  function drawChart() {
+  function drawCharts() {
 
     // categories doughnut chart
     var data = google.visualization.arrayToDataTable([
@@ -86,4 +86,7 @@
     var chart = new google.visualization.ColumnChart(document.getElementById('history_barchart'));
     chart.draw(data, options);
   }
+  $(window).resize(function(){
+    drawCharts();
+  });
 </script>
