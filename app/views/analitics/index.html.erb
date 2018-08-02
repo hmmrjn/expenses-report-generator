@@ -4,7 +4,7 @@
 
 <div class="card">
   <div class="card-body">
-    <h4 class="card-title">Categories <small class="text-muted">statistics</small></h4>
+    <h4 class="card-title">Categories <small class="text-muted">all periods statistics</small></h4>
     <div id="categories_donutchart" style="width: 800px; height: 450px;"></div>
   </div>
 </div>
@@ -13,8 +13,17 @@
 
 <div class="card">
   <div class="card-body">
-    <h4 class="card-title">Sub Categories <small class="text-muted">statistics</small></h4>
+    <h4 class="card-title">Sub Categories <small class="text-muted">all periods statistics</small></h4>
     <div id="sub_categories_donutchart" style="width: 800px; height: 450px;"></div>
+  </div>
+</div>
+
+<br>
+
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title">Sub Categories <small class="text-muted">periodical statistics</small></h4>
+    <div id="history_barchart" style="height: 800px;"></div>
   </div>
 </div>
 
@@ -23,12 +32,11 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
   google.charts.load("current", {packages:["corechart"]});
+  google.charts.setOnLoadCallback(drawChart);
 
-  // sub_categories doughnut chart
-  google.charts.setOnLoadCallback(drawChart);
-  // categories doughnut chart
-  google.charts.setOnLoadCallback(drawChart);
   function drawChart() {
+
+    // categories doughnut chart
     var data = google.visualization.arrayToDataTable([
       ['SubCategory', 'Amount'],
       <% @categories_array.each do |row| %>
@@ -43,6 +51,7 @@
     var chart = new google.visualization.PieChart(document.getElementById('categories_donutchart'));
     chart.draw(data, options);
 
+    // sub_categories doughnut chart
     var data = google.visualization.arrayToDataTable([
       ['SubCategory', 'Amount'],
       <% @sub_categories_array.each do |row| %>
@@ -55,6 +64,26 @@
       backgroundColor: { fill:'transparent' }
     };
     var chart = new google.visualization.PieChart(document.getElementById('sub_categories_donutchart'));
+    chart.draw(data, options);
+
+    // sub_categories periodical column chart
+    var data = google.visualization.arrayToDataTable([
+      ['sub_categories', <%= @sub_categories.map { |sub_category| "'#{sub_category.name}'" }.join(', ').html_safe %>],
+      <% @montly_amounts_array.each do |month_set| %>
+        ['<%= month_set[:month] %>', <%= month_set[:amounts].map { |amount| amount }.join(', ').html_safe %>],
+      <% end %>
+    ]);
+    var options = {
+      legend: { position: 'top', maxLines: 3 },
+      chartArea: {width: '85%'},
+      bar: { groupWidth: '80%' },
+      hAxis: {
+        title: 'Month'
+      },
+      sliceVisibilityThreshold: .2,
+      isStacked: true
+    };
+    var chart = new google.visualization.ColumnChart(document.getElementById('history_barchart'));
     chart.draw(data, options);
   }
 </script>
