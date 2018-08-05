@@ -18,6 +18,12 @@ ActiveRecord::Schema.define(version: 2018_07_29_192134) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "expense_groups", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "expenses", force: :cascade do |t|
     t.date "date"
     t.integer "sub_category_id"
