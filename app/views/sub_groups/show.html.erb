@@ -91,7 +91,7 @@
 </div>
 <p>
   <%= link_to 'Download', '#', class: 'btn btn-secondary', 'data-toggle' => 'collapse', 'data-target' => '#collapseDownload', 'aria-expanded' => 'false', 'aria-controls' => 'collapseDonwload'  %>
-  <%= link_to 'Dictate', "#", class: 'btn btn-secondary', 'data-toggle' => 'collapse', 'data-target' => '#collapseDictate', 'aria-expanded' => 'false', 'aria-controls' => 'collapseDictate' %>
+  <%= link_to 'Dictation Options', "#", class: 'btn btn-secondary', 'data-toggle' => 'collapse', 'data-target' => '#collapseDictate', 'aria-expanded' => 'false', 'aria-controls' => 'collapseDictate' %>
   <%= link_to 'Delete All', "/sub_groups/#{@sub_group.id}/expenses", class: 'btn btn-danger', method: :delete, data: { confirm: 'Are you sure?' } %>
 </p>
 <div class="collapse" id="collapseDownload">
@@ -132,17 +132,18 @@
       <th>Category</th>
       <th>Sub category</th>
       <th>Amount</th>
-      <th colspan="2"></th>
+      <th colspan="3"></th>
     </tr>
   </thead>
 
   <tbody>
-    <% @expenses.each do |expense| %>
-      <tr>
+    <% @expenses.each_with_index do |expense, i| %>
+      <tr row_index="<%= i %>">
         <td><%= expense.date %></td>
         <td><%= expense.sub_category.category.name.upcase %></td>
         <td><%= expense.sub_category.name.capitalize %></td>
         <td align="right"><%= expense.amount.to_s(:delimited) %></td>
+        <td><i class="fas fa-play dictate_from_here"></i></td>
         <td><%= link_to edit_expense_path(expense), title: 'Edit' do %><i class="fas fa-edit"></i><% end %></td>
         <td><%= link_to expense, title: 'Delete', method: :delete, data: { confirm: 'Are you sure?' } do %><i class="fas fa-trash"></i><% end %></td>
       </tr>
@@ -173,17 +174,9 @@ $(function(){
   }
 
 /*
- * Dictation
+ * Dictation¥
+ * Web Speech Synthesis API
  */
-
-// Web Speech Synthesis API
-let array = [];
-$("table.expenses-table tbody tr").each(function() {
-  let row = $(this).children().toArray().map( tr => tr.innerText )
-  let date = moment(row[0]).format("MMMM Do"); //2018-1-2 to January 2nd
-  let text = `${date}. price ${row[3]}, ${row[2]}`;   // [3]:ammount [2]:sub_category
-  array.push(text);
-});
 
 // Check for browser support
 if (!"speechSynthesis" in window) {
@@ -211,8 +204,10 @@ window.speechSynthesis.onvoiceschanged = function(e) {
   loadVoices();
 };
 
+let highlightedRowIndex = 0;
+let clickedRowIndex = null;
+
 // Create a new utterance for the specified text and add it to the queue.
-let i = 0;
 function speak(text) {
 var uttr = new SpeechSynthesisUtterance();
   uttr.text = text;
@@ -225,22 +220,20 @@ var uttr = new SpeechSynthesisUtterance();
       .getVoices()
       .filter(voice => voice.name == $("#voice-name").val())[0];
   }
-
+  highlightedRowIndex = clickedRowIndex;
+  highlightRow(highlightedRowIndex);
   speechSynthesis.speak(uttr);
 
-
-  uttr.onend = function(e) {
-    $("table.expenses-table tbody tr").eq(i).css('color', 'black');
-    $("table.expenses-table tbody tr").eq(i+1).css('color', 'red');
-    i++;
+  uttr.onend = function() {
+    highlightRow(++highlightedRowIndex);
   };
 }
 
 // Set up an event listener for when the 'speak' button is clicked.
 $("#speak-button").click(function() {
-  array.forEach(function(val) {
-    $("table.expenses-table tbody tr").eq(0).css('color', 'red');
-    speak(val);
+  const speechTextArray = generateSpeechTextArray(0);
+  speechTextArray.forEach(function(text) {
+    speak(text);
   });
 });
 $("#pause-button").click(function() {
@@ -252,6 +245,41 @@ $("#resume-button").click(function() {
 $("#stop-button").click(function() {
   speechSynthesis.cancel();
 });
+
+$('.dictate_from_here').click(function(e){
+  clickedRowIndex = $(this).parent().parent().attr('row_index');
+  const speechTextArray = generateSpeechTextArray(clickedRowIndex);
+  speechSynthesis.cancel();
+  highlightedRowIndex = clickedRowIndex;
+  speechTextArray.forEach(function(text) {
+    speak(text);
+  });
+});
+
+function generateSpeechTextArray(firstRowIndex){
+  let array = [];
+  let isBelowTheRowClicked = false;
+  $("table.expenses-table tbody tr").each(function() {
+    if ($(this).attr('row_index') == firstRowIndex){
+      isBelowTheRowClicked = true;
+    }
+    if (isBelowTheRowClicked) {
+      let row = $(this).children().toArray().map( tr => tr.innerText )
+      let date = moment(row[0]).format("MMMM Do"); //2018-1-2 to January 2nd
+      let text = `date, ${date}. price ${row[3]}, ${row[2]}.`; // [3]:ammount [2]:sub_category
+      array.push(text);
+    }
+  });
+  return array;
+}
+
+function highlightRow(n){
+  $rows = $("table.expenses-table tbody tr");
+  $rows.each(function() {
+    $(this).css('background-color', 'transparent');
+  });
+  $rows.eq(n).css('background-color', 'rgba(0, 100, 255, .3)');
+}
 
 })
 </script>
