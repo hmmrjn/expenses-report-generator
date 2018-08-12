@@ -60,6 +60,10 @@ class GroupsController < ApplicationController
       c = sheet.add_cell(i, 2, expense.amount)
       c.set_number_format("[$¥-ja-JP]* #,###")
       sheet.add_cell(i, 3, expense.sub_category.name.titleize)
+      sheet.add_cell(i, 4, expense.sub_group.name)
+      sheet.change_column_width(1, 20)
+      sheet.change_column_width(3, 20)
+      sheet.change_column_width(4, 30)
     end
     send_data book.stream.read,
       type: 'application/excel',
