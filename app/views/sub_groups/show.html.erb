@@ -91,7 +91,6 @@
 </div>
 <p>
   <%= link_to 'Download', '#', class: 'btn btn-secondary', 'data-toggle' => 'collapse', 'data-target' => '#collapseDownload', 'aria-expanded' => 'false', 'aria-controls' => 'collapseDonwload'  %>
-  <%= link_to 'Dictation Options', "#", class: 'btn btn-secondary', 'data-toggle' => 'collapse', 'data-target' => '#collapseDictate', 'aria-expanded' => 'false', 'aria-controls' => 'collapseDictate' %>
   <%= link_to 'Delete All', "/sub_groups/#{@sub_group.id}/expenses", class: 'btn btn-danger', method: :delete, data: { confirm: 'Are you sure?' } %>
 </p>
 <div class="collapse" id="collapseDownload">
@@ -100,26 +99,6 @@
       <h5>Download Expenses</h5>
       <%= link_to 'Excel', "/sub_groups/#{@sub_group.id}/download_excel", class: 'btn btn-primary' %>
       <%= link_to 'CSV', "/sub_groups/#{@sub_group.id}/download_csv", class: 'btn btn-primary' %>
-    </div>
-  </div>
-</div>
-<div class="collapse" id="collapseDictate">
-  <div class="card">
-    <div class="card-body">
-      <h5>Dictate Expenses</h5>
-      <p id="msg"></p>
-      <label for="voice-name">Voice:</label>
-      <select name="voice-name" id="voice-name"></select>
-      <br>
-      <label for="rate">Speed:</label>
-      <input type="range" min="0" max="2" step="0.25" name="rate" id="rate" value="1">
-      <br>
-      <div class="btn-group" role="group" aria-label="Basic example">
-        <button id="speak-button" class="btn btn-primary">Speak</button>
-        <button id="pause-button" class="btn btn-secondary">Pause</button>
-        <button id="resume-button" class="btn btn-secondary">Resume</button>
-        <button id="stop-button" class="btn btn-secondary">Stop</button>
-      </div>
     </div>
   </div>
 </div>
@@ -152,6 +131,29 @@
 </table>
 
 </div>
+<br><br><br><br><br>
+
+<div id="dictation-controls" class="card fixed-bottom" style="display: none; box-shadow: 0 0 100px rgba(0, 0, 0, .2)">
+  <div class="card-body d-flex align-items-center">
+    <h5 class="d-inline-block m-0 mr-5">Dictation Controls</h5>
+    <div class="btn-group mr-5" role="group" aria-label="Basic example">
+      <button id="speak-button" class="btn btn-primary"><i class="fas fa-play mx-2"></i>Speak All</button>
+      <button id="pause-button" class="btn btn-primary" style="display: none"><i class="fas fa-pause mx-2"></i>Pause</button>
+      <button id="resume-button" class="btn btn-primary" style="display: none"><i class="fas fa-play mx-2"></i>Resume</button>
+      <button id="stop-button" class="btn btn-secondary"><i class="fas fa-stop mx-2"></i>Stop</button>
+    </div>
+    <label for="rate" class="m-0 mr-2">Speed:</label>
+    <input type="range" min="0" max="2" step="0.25" name="rate" id="rate" value="0.75" class="mr-5">
+    <label for="voice-name" class="m-0 mr-2">Voice:</label>
+    <select name="voice-name" id="voice-name" class="custom-select" style="width: max-content"></select>
+    <p id="msg" class="d-inline-block text-danger"></p>
+    <button id="close-dictation-controls" class="close mr-2 ml-auto" aria-label="Close">
+     <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</div>
+
+<button id="show-dictation-controls" class="btn btn-primary m-3 fixed-bottom"><i class="fas fa-comment-dots mx-2"></i>Dictation</button>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
 <script>
@@ -235,15 +237,33 @@ $("#speak-button").click(function() {
   speechTextArray.forEach(function(text) {
     speak(text);
   });
+  $(this).hide();
+  $("#pause-button").show();
 });
 $("#pause-button").click(function() {
   speechSynthesis.pause();
+  $(this).hide();
+  $("#resume-button").show();
 });
 $("#resume-button").click(function() {
   speechSynthesis.resume();
+  $(this).hide();
+  $("#pause-button").show()
 });
 $("#stop-button").click(function() {
   speechSynthesis.cancel();
+  $("#pause-button").hide();
+  $("#resume-button").hide();
+  $("#speak-button").show();
+});
+
+$("#close-dictation-controls").click(function(){
+  $("#dictation-controls").slideUp();
+  $("#show-dictation-controls").fadeIn();
+});
+$("#show-dictation-controls").click(function(){
+  $(this).hide();
+  $("#dictation-controls").slideDown();
 });
 
 $('.dictate_from_here').click(function(e){
@@ -254,6 +274,11 @@ $('.dictate_from_here').click(function(e){
   speechTextArray.forEach(function(text) {
     speak(text);
   });
+  $("#show-dictation-controls").hide();
+  $("#dictation-controls").slideDown();
+  $("#speak-button").hide();
+  $("#resume-button").hide();
+  $("#pause-button").show();
 });
 
 function generateSpeechTextArray(firstRowIndex){
