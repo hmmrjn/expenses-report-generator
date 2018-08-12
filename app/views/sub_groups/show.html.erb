@@ -259,6 +259,7 @@ $('.dictate_from_here').click(function(e){
 function generateSpeechTextArray(firstRowIndex){
   let array = [];
   let isBelowTheRowClicked = false;
+  let movingOnSigns = ['Prepare for the next', 'Moving on to the next', 'And the next expense is', 'Okay, next expense', 'Is that fine? moving next', 'Moving on to the next expense'];
   $("table.expenses-table tbody tr").each(function() {
     if ($(this).attr('row_index') == firstRowIndex){
       isBelowTheRowClicked = true;
@@ -266,7 +267,7 @@ function generateSpeechTextArray(firstRowIndex){
     if (isBelowTheRowClicked) {
       let row = $(this).children().toArray().map( tr => tr.innerText )
       let date = moment(row[0]).format("MMMM Do"); //2018-1-2 to January 2nd
-      let text = `date, ${date}. price ${row[3]}, ${row[2]}.`; // [3]:ammount [2]:sub_category
+      let text = `date, ${date}. price ${row[3]}, ${row[2]}. ${movingOnSigns[Math.round(Math.random()*movingOnSigns.length)]}.`;
       array.push(text);
     }
   });
