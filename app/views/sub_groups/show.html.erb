@@ -292,7 +292,7 @@ function generateSpeechTextArray(firstRowIndex){
     if (isBelowTheRowClicked) {
       let row = $(this).children().toArray().map( tr => tr.innerText )
       let date = moment(row[0]).format("MMMM Do"); //2018-1-2 to January 2nd
-      let text = `date, ${date}. price ${row[3]}, ${row[2]}. ${movingOnSigns[Math.round(Math.random()*movingOnSigns.length)]}.`;
+      let text = `date, ${date}. price ${row[3]}, ${row[2]}. ${movingOnSigns[Math.floor(Math.random()*movingOnSigns.length)]}.`;
       array.push(text);
     }
   });
